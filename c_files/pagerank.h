@@ -1,5 +1,5 @@
-#ifndef DENSE_MAT
-#define DENSE_MAT
+#ifndef PAGERANK_H
+#define PAGERANK_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,9 +17,13 @@ typedef struct dmatrix Vector; // typedef for Vector based on DMatrix
 //function prototypes
 DMatrix *initDMatrix(uint numpg);                       //initialize new dense matrix
 Vector *initVector(uint numpg);                         // intialize a new vector
+SMatrix *initSMatrix(uint numpg);                       // initialize a new sparse matrix
 void matvecMul(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 void printDMatrix(DMatrix *dmat);
 void fillDMatrix(DMatrix *mat, float val);
+void destroyDMatrix(DMatrix *mat);
+void vecNormalize(Vector *vec); // normalize values of surfer values
+void pagerank(uint numpg);
 
 // definition of dense matrix object
 struct dmatrix
@@ -59,6 +63,16 @@ DMatrix *initDMatrix(uint numpg)
 
     fillDMatrix(matrix, 1.0 / numpg);
     return matrix;
+}
+
+void destroyDMatrix(DMatrix *mat)
+{
+    // detroy matrix object and free its memory
+    for (uint r = 0; r < mat->numRow; ++r)
+        free(mat->data[r]);
+
+    free(mat->data);
+    free(mat);
 }
 
 Vector *initVector(uint numpg)
@@ -116,9 +130,46 @@ void matvecMul(DMatrix *mat, Vector *vec, Vector *res)
         }
         res->data[r][0] = tmp;
     }
+
+    vecNormalize(res);
 }
+
+void vecNormalize(Vector *vec)
+{
+    // normalize the content of vector to sum up to one
+    float sum = 0;
+    for (uint r = 0; r < vec->numRow; ++r)
+        sum += vec->data[r][0];
+
+    for (uint r = 0; r < vec->numRow; ++r)
+        vec->data[r][0] /= sum;
+}
+
 void Dense2Sparse(DMatrix *dmat, SMatrix *smat)
 {
     //convert Dense Matrix to Sparse Matrix
+}
+
+void pagerank(uint numpg)
+{
+    DMatrix *mymat = initDMatrix(numpg);
+    Vector *myvec = initVector(numpg);
+    // Vector *res = initVector(10);
+
+    // fillDMatrix(res, 0);
+
+    printDMatrix(mymat);
+    printDMatrix(myvec);
+    // printDMatrix(res);
+
+    for (uint iter = 0; iter < 2; ++iter)
+    {
+
+        matvecMul(mymat, myvec, myvec);
+        printDMatrix(myvec);
+    }
+
+    destroyDMatrix(mymat);
+    destroyDMatrix(myvec);
 }
 #endif // DENSE_MAT

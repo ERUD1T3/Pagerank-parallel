@@ -1,2 +1,2 @@
 pagerank:
-	gcc -o ./bin/pg ./c_files/pagerank.c
+	gcc -o ./bin/pg ./c_files/main.c
