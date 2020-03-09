@@ -3,3 +3,6 @@ pagerank:
 
 debug:
 	gcc -ggdb -o ./bin/pg_debug ./c_files/main.c
+
+run:
+	./bin/pg

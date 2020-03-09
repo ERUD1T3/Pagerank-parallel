@@ -15,6 +15,7 @@ typedef struct dmatrix DMatrix;
 typedef struct smatrix SMatrix;
 typedef struct dmatrix Vector; // typedef for Vector based on DMatrix
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
 DMatrix *initDMatrix(uint numpg);                 //initialize new dense matrix
 Vector *initVector(uint numpg);                   // intialize a new vector
@@ -23,15 +24,18 @@ void destroySMatrix(SMatrix *mat);
 void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 void printDMatrix(DMatrix *dmat);
 void fillDMatrix(DMatrix *mat, float val);
+void fillDMatrixfromData(DMatrix *mat, float data[10][10]);
+
 void destroyDMatrix(DMatrix *mat);
 void vecNormalize(Vector *vec); // normalize values of surfer values
-void pagerank(uint numpg);
+// void pagerank(uint numpg);
 SMatrix *Dense2Sparse(DMatrix *dmat);
 void printSMatrix(SMatrix *smat);
 void minmaxPageRank(Vector *vec);
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
 void matVecDampn(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
 struct dmatrix
 {
@@ -68,7 +72,7 @@ DMatrix *initDMatrix(uint numpg)
     for (uint r = 0; r < numpg; ++r)
         matrix->data[r] = (float *)malloc(numpg * sizeof(float));
 
-    fillDMatrix(matrix, 1.0 / numpg);
+    // fillDMatrix(matrix, 1.0 / numpg);
     return matrix;
 }
 
@@ -95,7 +99,7 @@ Vector *initVector(uint numpg)
     for (uint r = 0; r < numpg; ++r)
         vec->data[r] = (float *)malloc(sizeof(float));
 
-    vec->data[0][0] = 1; // full probability to be on page 1
+    fillDMatrix(vec, 1.0 / numpg);
     return vec;
 }
 
@@ -121,6 +125,14 @@ void fillDMatrix(DMatrix *mat, float val)
     for (uint r = 0; r < mat->numRow; ++r)
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = val;
+}
+
+void fillDMatrixfromData(DMatrix *mat, float data[10][10])
+{
+    // fillDMatrix the content of a DMatrix to val specified
+    for (uint r = 0; r < mat->numRow; ++r)
+        for (uint c = 0; c < mat->numCol; ++c)
+            mat->data[r][c] = data[r][c];
 }
 
 void matVec(DMatrix *mat, Vector *vec, Vector *res)
@@ -243,36 +255,10 @@ void printSMatrix(SMatrix *smat)
     printf("\n");
 }
 
-void pagerank(uint numpg)
-{
-    DMatrix *mymat = initDMatrix(numpg);
-    Vector *myvec = initVector(numpg);
-    // SMatrix *mysmat = Dense2Sparse(mymat);
-    // Vector *res = initVector(10);
+// void pagerank(uint numpg)
+// {
 
-    // fillDMatrix(res, 0);
-
-    printDMatrix(mymat);
-    printDMatrix(myvec);
-    // printSMatrix(mysmat);
-    // printDMatrix(res);
-
-    for (uint iter = 0; iter < K; ++iter)
-    {
-
-        // matVec(mymat, myvec, myvec);
-        matVecDampn(mymat, myvec, myvec);
-        // matVecSp(mysmat, myvec, myvec);
-        // printDMatrix(myvec);
-    }
-
-    printDMatrix(myvec);
-    minmaxPageRank(myvec);
-
-    destroyDMatrix(mymat);
-    destroyDMatrix(myvec);
-    // destroySMatrix(mysmat);
-}
+// }
 
 void minmaxPageRank(Vector *vec)
 {
