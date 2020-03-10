@@ -1,148 +1,26 @@
 #ifndef PAGERANK_H
 #define PAGERANK_H
 
+#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "sllist.h"
+#include "dmatrix.h"
+#include "smatrix.h"
 
 //const
 #define Q .15  // dampening factor
 #define K 1000 // number of matvec iterations
 
-//typedefs
-typedef unsigned int uint;
-typedef struct dmatrix DMatrix;
-typedef struct smatrix SMatrix;
-typedef struct dmatrix Vector; // typedef for Vector based on DMatrix
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
-DMatrix *initDMatrix(uint numpg);                 //initialize new dense matrix
-Vector *initVector(uint numpg);                   // intialize a new vector
-SMatrix *initSMatrix(uint nnzelsN, uint rowidxN); // initialize a new sparse matrix
-void destroySMatrix(SMatrix *mat);
-void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
-void printDMatrix(DMatrix *dmat);
-void fillDMatrix(DMatrix *mat, double val);
-void fillDMatrixfromData(DMatrix *mat, double data[10][10]);
-
-void destroyDMatrix(DMatrix *mat);
-void vecNormalize(Vector *vec); // normalize values of surfer values
-// void pagerank(uint numpg);
-SMatrix *Dense2Sparse(DMatrix *dmat);
-void printSMatrix(SMatrix *smat);
 void minmaxPageRank(Vector *vec);
+void vecNormalize(Vector *vec);                      // normalize values of surfer values
+void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
 void matVecDampn(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
-struct dmatrix
-{
-    //square matrix
-    uint numRow, numCol;
-    // probabilities contained in the matrix
-    double **data;
-};
-
-// definition of sparse matrix using CSR format
-struct smatrix
-{
-    // size of vectors respectively
-    uint nnzelsN, colidxN, rowidxN;
-    // double *nnzels; // stores non zero elements of the matrix
-    SLList *nnzels,
-        *colidx;  // column indices of elements in nnzeroels
-    uint *rowidx; //partial sum of the num zero elements
-
-}; //
-
-DMatrix *initDMatrix(uint numpg)
-{
-    //initialize a new Dense matrix for rangking algorithm
-
-    // create pointer to matrix
-    DMatrix *matrix = (DMatrix *)malloc(sizeof(DMatrix));
-    // matrix->numpg = numpg;
-    matrix->numCol = numpg;
-    matrix->numRow = numpg;
-
-    // setting up data matrix to zeros
-    matrix->data = (double **)malloc(numpg * sizeof(double *));
-    for (uint r = 0; r < numpg; ++r)
-        matrix->data[r] = (double *)malloc(numpg * sizeof(double));
-
-    // fillDMatrix(matrix, 1.0 / numpg);
-    matrix->data[0][numpg - 1] = .5;
-    matrix->data[1][0] = 1.0;
-
-    for (uint r = 0, c = 1; r < numpg - 1; ++r, ++c)
-        matrix->data[r][c] = .5;
-
-    for (uint r = 2, c = 1; r < numpg; ++r, ++c)
-        matrix->data[r][c] = .5;
-
-    return matrix;
-}
-
-void destroyDMatrix(DMatrix *mat)
-{
-    // detroy matrix object and free its memory
-    for (uint r = 0; r < mat->numRow; ++r)
-        free(mat->data[r]);
-
-    free(mat->data);
-    free(mat);
-}
-
-Vector *initVector(uint numpg)
-{
-    //initialize the surf vector
-    Vector *vec = (Vector *)malloc(sizeof(Vector));
-    // vec->numpg = numpg;
-    vec->numRow = numpg;
-    vec->numCol = 1;
-
-    // setting up data matrix to zeros
-    vec->data = (double **)malloc(numpg * sizeof(double *));
-    for (uint r = 0; r < numpg; ++r)
-        vec->data[r] = (double *)malloc(sizeof(double));
-
-    fillDMatrix(vec, 1.0 / numpg);
-    return vec;
-}
-
-void printDMatrix(DMatrix *dmat)
-{
-    // print the dense matrix
-    printf("[\n");
-    for (uint r = 0; r < dmat->numRow; ++r)
-    {
-        printf("[");
-        for (uint c = 0; c < dmat->numCol; ++c)
-        {
-            printf(" %.2f", dmat->data[r][c]);
-        }
-        printf(" ]\n");
-    }
-    printf("]\n");
-}
-
-void fillDMatrix(DMatrix *mat, double val)
-{
-    // fillDMatrix the content of a DMatrix to val specified
-    for (uint r = 0; r < mat->numRow; ++r)
-        for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = val;
-}
-
-void fillDMatrixfromData(DMatrix *mat, double data[10][10])
-{
-    // fillDMatrix the content of a DMatrix to val specified
-    for (uint r = 0; r < mat->numRow; ++r)
-        for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = data[r][c];
-}
 
 void matVec(DMatrix *mat, Vector *vec, Vector *res)
 {
@@ -170,7 +48,7 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
         // res->data[r][0] = 0.0;
         for (uint c = mat->rowidx[r]; c < mat->rowidx[r + 1]; ++c)
         {
-            tmp += *(double *)(getAt(mat->nnzels, c)) * vec->data[*(uint *)getAt(mat->colidx, c)][0];
+            tmp += mat->nnzels[c] * vec->data[mat->colidx[c]][0];
         }
         res->data[r][0] = tmp;
     }
@@ -188,86 +66,6 @@ void vecNormalize(Vector *vec)
     for (uint r = 0; r < vec->numRow; ++r)
         vec->data[r][0] /= sum;
 }
-
-SMatrix *initSMatrix(uint nnzelsN, uint rowsize)
-{
-    SMatrix *newmat = (SMatrix *)malloc(sizeof(SMatrix));
-    newmat->nnzelsN = nnzelsN;
-    newmat->colidxN = nnzelsN;
-    newmat->rowidxN = rowsize + 1;
-    // newmat->nnzels = (double *)malloc(nnzelsN * sizeof(double));
-    newmat->rowidx = (uint *)malloc((rowsize + 1) * sizeof(uint));
-    // newmat->colidx = (uint *)malloc(nnzelsN * sizeof(uint));
-    newmat->nnzels = initList();
-    newmat->colidx = initList();
-
-    return newmat;
-}
-
-void destroySMatrix(SMatrix *mat)
-{
-    destroyList(mat->nnzels);
-    destroyList(mat->colidx);
-    free(mat->rowidx);
-    free(mat);
-}
-
-SMatrix *Dense2Sparse(DMatrix *dmat)
-{
-    //convert Dense Matrix to Sparse Matrix
-    uint iter = 0;
-    for (uint r = 0; r < dmat->numRow; ++r)
-        for (uint c = 0; c < dmat->numCol; ++c)
-            if (dmat->data[r][c] != 0.0)
-                iter++;
-
-    SMatrix *res = initSMatrix(iter, dmat->numRow);
-
-    uint rowidx_counter = 0;
-    for (uint r = 0; r < dmat->numRow; ++r)
-    {
-        for (uint c = 0; c < dmat->numCol; ++c)
-        {
-            if (dmat->data[r][c] != 0.0)
-            {
-                if (c == 0)
-                { // begin a row
-                    res->rowidx[rowidx_counter++] = res->nnzels->size;
-                }
-                // storing non zero elements
-                pushback(res->nnzels, &(dmat->data[r][c]));
-                // storing the columns of the non zero elements
-                uint *colptr = (uint *)malloc(sizeof(uint));
-                *colptr = c;
-                pushback(res->colidx, colptr);
-                // adding index of row
-            }
-        }
-    }
-
-    res->rowidx[res->rowidxN - 1] = iter;
-
-    return res;
-}
-
-void printSMatrix(SMatrix *smat)
-{
-    //prints the SMatrix
-    printf("\non zero elements:");
-    printlist(smat->nnzels, 'f');
-    printf("\ncolumn indices");
-    printlist(smat->colidx, 'i');
-    printf("\nrow indices ");
-    for (uint i = 0; i < smat->rowidxN; ++i)
-        printf("%d ", smat->rowidx[i]);
-
-    printf("\n");
-}
-
-// void pagerank(uint numpg)
-// {
-
-// }
 
 void minmaxPageRank(Vector *vec)
 {
@@ -290,7 +88,7 @@ void minmaxPageRank(Vector *vec)
         }
     }
 
-    printf("X[min = %d] = %.2f | X[max = %d] = %.2f\n", minidx, minval, maxidx, maxval);
+    printf("X[min = %d] = %.2lf | X[max = %d] = %.2lf\n", minidx, minval, maxidx, maxval);
 }
 
 void matVecDampn(DMatrix *mat, Vector *vec, Vector *res)
