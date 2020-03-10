@@ -23,8 +23,8 @@ SMatrix *initSMatrix(uint nnzelsN, uint rowidxN); // initialize a new sparse mat
 void destroySMatrix(SMatrix *mat);
 void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 void printDMatrix(DMatrix *dmat);
-void fillDMatrix(DMatrix *mat, float val);
-void fillDMatrixfromData(DMatrix *mat, float data[10][10]);
+void fillDMatrix(DMatrix *mat, double val);
+void fillDMatrixfromData(DMatrix *mat, double data[10][10]);
 
 void destroyDMatrix(DMatrix *mat);
 void vecNormalize(Vector *vec); // normalize values of surfer values
@@ -42,7 +42,7 @@ struct dmatrix
     //square matrix
     uint numRow, numCol;
     // probabilities contained in the matrix
-    float **data;
+    double **data;
 };
 
 // definition of sparse matrix using CSR format
@@ -50,7 +50,7 @@ struct smatrix
 {
     // size of vectors respectively
     uint nnzelsN, colidxN, rowidxN;
-    // float *nnzels; // stores non zero elements of the matrix
+    // double *nnzels; // stores non zero elements of the matrix
     SLList *nnzels,
         *colidx;  // column indices of elements in nnzeroels
     uint *rowidx; //partial sum of the num zero elements
@@ -68,11 +68,20 @@ DMatrix *initDMatrix(uint numpg)
     matrix->numRow = numpg;
 
     // setting up data matrix to zeros
-    matrix->data = (float **)malloc(numpg * sizeof(float *));
+    matrix->data = (double **)malloc(numpg * sizeof(double *));
     for (uint r = 0; r < numpg; ++r)
-        matrix->data[r] = (float *)malloc(numpg * sizeof(float));
+        matrix->data[r] = (double *)malloc(numpg * sizeof(double));
 
     // fillDMatrix(matrix, 1.0 / numpg);
+    matrix->data[0][numpg - 1] = .5;
+    matrix->data[1][0] = 1.0;
+
+    for (uint r = 0, c = 1; r < numpg - 1; ++r, ++c)
+        matrix->data[r][c] = .5;
+
+    for (uint r = 2, c = 1; r < numpg; ++r, ++c)
+        matrix->data[r][c] = .5;
+
     return matrix;
 }
 
@@ -95,9 +104,9 @@ Vector *initVector(uint numpg)
     vec->numCol = 1;
 
     // setting up data matrix to zeros
-    vec->data = (float **)malloc(numpg * sizeof(float *));
+    vec->data = (double **)malloc(numpg * sizeof(double *));
     for (uint r = 0; r < numpg; ++r)
-        vec->data[r] = (float *)malloc(sizeof(float));
+        vec->data[r] = (double *)malloc(sizeof(double));
 
     fillDMatrix(vec, 1.0 / numpg);
     return vec;
@@ -119,7 +128,7 @@ void printDMatrix(DMatrix *dmat)
     printf("]\n");
 }
 
-void fillDMatrix(DMatrix *mat, float val)
+void fillDMatrix(DMatrix *mat, double val)
 {
     // fillDMatrix the content of a DMatrix to val specified
     for (uint r = 0; r < mat->numRow; ++r)
@@ -127,7 +136,7 @@ void fillDMatrix(DMatrix *mat, float val)
             mat->data[r][c] = val;
 }
 
-void fillDMatrixfromData(DMatrix *mat, float data[10][10])
+void fillDMatrixfromData(DMatrix *mat, double data[10][10])
 {
     // fillDMatrix the content of a DMatrix to val specified
     for (uint r = 0; r < mat->numRow; ++r)
@@ -139,7 +148,7 @@ void matVec(DMatrix *mat, Vector *vec, Vector *res)
 {
     // multiply compatible matrix and vector
 
-    float tmp = 0.0;
+    double tmp = 0.0;
     for (uint r = 0; r < mat->numRow; ++r)
     {
         // res->data[r][0] = 0.0;
@@ -155,13 +164,13 @@ void matVec(DMatrix *mat, Vector *vec, Vector *res)
 
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
 {
-    float tmp = 0.0;
+    double tmp = 0.0;
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
         // res->data[r][0] = 0.0;
         for (uint c = mat->rowidx[r]; c < mat->rowidx[r + 1]; ++c)
         {
-            tmp += *(float *)(getAt(mat->nnzels, c)) * vec->data[*(uint *)getAt(mat->colidx, c)][0];
+            tmp += *(double *)(getAt(mat->nnzels, c)) * vec->data[*(uint *)getAt(mat->colidx, c)][0];
         }
         res->data[r][0] = tmp;
     }
@@ -172,7 +181,7 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
 void vecNormalize(Vector *vec)
 {
     // normalize the content of vector to sum up to one
-    float sum = 0;
+    double sum = 0;
     for (uint r = 0; r < vec->numRow; ++r)
         sum += vec->data[r][0];
 
@@ -186,7 +195,7 @@ SMatrix *initSMatrix(uint nnzelsN, uint rowsize)
     newmat->nnzelsN = nnzelsN;
     newmat->colidxN = nnzelsN;
     newmat->rowidxN = rowsize + 1;
-    // newmat->nnzels = (float *)malloc(nnzelsN * sizeof(float));
+    // newmat->nnzels = (double *)malloc(nnzelsN * sizeof(double));
     newmat->rowidx = (uint *)malloc((rowsize + 1) * sizeof(uint));
     // newmat->colidx = (uint *)malloc(nnzelsN * sizeof(uint));
     newmat->nnzels = initList();
@@ -263,7 +272,7 @@ void printSMatrix(SMatrix *smat)
 void minmaxPageRank(Vector *vec)
 {
     // return the max and min values in the vector, as well as their indices
-    float minval = vec->data[0][0], maxval = vec->data[0][0];
+    double minval = vec->data[0][0], maxval = vec->data[0][0];
     uint minidx = 0, maxidx = 0;
 
     for (uint r = 0; r < vec->numRow; ++r)
@@ -288,7 +297,7 @@ void matVecDampn(DMatrix *mat, Vector *vec, Vector *res)
 {
     // multiply compatible matrix and vector
 
-    float tmp = 0.0;
+    double tmp = 0.0;
     for (uint r = 0; r < mat->numRow; ++r)
     {
         // res->data[r][0] = 0.0;

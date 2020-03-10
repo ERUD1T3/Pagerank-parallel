@@ -1,32 +1,17 @@
+#include <omp.h>
 #include <stdio.h>
 #include "pagerank.h"
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    uint numpg = 10;
+    uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
     DMatrix *mymat = initDMatrix(numpg);
     Vector *myvec = initVector(numpg);
     // SMatrix *mysmat = Dense2Sparse(mymat);
     // Vector *res = initVector(10);
 
-    // fillDMatrix(res, 0);
-
-    float data[10][10] = {
-        {0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5},
-        {1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-        {0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-        {0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0},
-        {0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0},
-        {0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0},
-        {0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0},
-        {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0},
-        {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5},
-        {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0}};
-
-    fillDMatrixfromData(mymat, data);
-
-    printDMatrix(mymat);
-    printDMatrix(myvec);
+    // printDMatrix(mymat);
+    // printDMatrix(myvec);
     // printSMatrix(mysmat);
     // printDMatrix(res);
 
@@ -39,9 +24,11 @@ int main(void)
         // printDMatrix(myvec);
     }
 
-    printDMatrix(myvec);
+    if (numpg <= 16)
+        printDMatrix(myvec);
     minmaxPageRank(myvec);
 
+    // garbage management
     destroyDMatrix(mymat);
     destroyDMatrix(myvec);
     // destroySMatrix(mysmat);
