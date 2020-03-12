@@ -96,6 +96,7 @@ void matVecDampn(DMatrix *mat, Vector *vec, Vector *res)
     // multiply compatible matrix and vector
 
     double tmp = 0.0;
+    #pragma omp parallel for private(c)
     for (uint r = 0; r < mat->numRow; ++r)
     {
         // res->data[r][0] = 0.0;
