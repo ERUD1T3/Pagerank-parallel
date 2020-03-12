@@ -1,3 +1,5 @@
+all: pagerank assgn2 assgn3 assgnextra
+
 pagerank:
 	gcc -o ./bin/pgrk ./c_files/assgn1.c
 
