@@ -2,7 +2,7 @@
 
 #include <omp.h>
 #include <stdio.h>
-#include "pagerank.h"
+#include "libs/pagerank.h"
 
 int main(int argc, char *argv[])
 {
