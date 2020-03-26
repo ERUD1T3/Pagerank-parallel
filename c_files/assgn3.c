@@ -1,8 +1,7 @@
 /* Assignment 1 source code */
 
-#include <omp.h>
 #include <stdio.h>
-#include "libs/pagerank.h"
+#include "libs/pagerankMPI.h"
 
 int main(int argc, char *argv[])
 {

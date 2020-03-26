@@ -7,6 +7,9 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "pagerank.h": "c",
+        "omp.h": "c",
+        "pagerankmpi.h": "c"
     }
 }

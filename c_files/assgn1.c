@@ -1,8 +1,8 @@
 /* Assignment 1 source code */
 
-#include <omp.h>
+// #include <omp.h>
 #include <stdio.h>
-#include "libs/pagerank.h"
+#include "libs/pagerankOMP.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,10 +23,10 @@ int main(int argc, char *argv[])
 
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter)
-        matVecDampn(H, pgrkV, pgrkV);
+        matVecDampn(H, pgrkV, pgrkV); // parallelized matVecDampn
     // matVec(mymat, myvec, myvec);
 
-    if (numpg <= 16)
+    if (numpg <= 16) // print the page rank vector is small
         printDMatrix(pgrkV);
 
     // display lowest and highest page ranks
