@@ -82,28 +82,28 @@ void vecNormalize(Vector *vec)
         vec->data[r][0] /= sum;
 }
 
-void matVec(DMatrix *mat, Vector *vec, Vector *res)
-{
-    // multiply compatible matrix and vector
+// void matVec(DMatrix *mat, Vector *vec, Vector *res)
+// {
+//     // multiply compatible matrix and vector
 
     
 
-    #pragma omp parallel for 
-    for (uint r = 0; r < mat->numRow; ++r)
-    {
-        double tmp = 0.0;
-        // res->data[r][0] = 0.0;
-        #pragma omp parallel for reduction(+:tmp)
-        for (uint c = 0; c < mat->numCol; ++c)
-        {
-            tmp += mat->data[r][c] * vec->data[c][0];
-        }
+//     #pragma omp parallel for 
+//     for (uint r = 0; r < mat->numRow; ++r)
+//     {
+//         double tmp = 0.0;
+//         // res->data[r][0] = 0.0;
+//         #pragma omp parallel for reduction(+:tmp)
+//         for (uint c = 0; c < mat->numCol; ++c)
+//         {
+//             tmp += mat->data[r][c] * vec->data[c][0];
+//         }
 
-        res->data[r][0] = tmp;
-    }
+//         res->data[r][0] = tmp;
+//     }
 
-    vecNormalize(res);
-}
+//     vecNormalize(res);
+// }
 
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
 {
