@@ -17,7 +17,7 @@ void minmaxPageRank(Vector *vec);
 void vecNormalize(Vector *vec);                      // normalize values of surfer values
 void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
-void matVecDampn(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
+DMatrix *dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
@@ -27,21 +27,6 @@ void minmaxPageRank(Vector *vec)
     // parallelized
     double minval = vec->data[0][0], maxval = vec->data[0][0];
     uint minidx = 0, maxidx = 0;
-
-    // for (uint r = 0; r < vec->numRow; ++r)
-    // {
-    //     if (vec->data[r][0] >= maxval)
-    //     {
-    //         maxval = vec->data[r][0];
-    //         maxidx = r;
-    //     }
-
-    //     if (vec->data[r][0] <= minval)
-    //     {
-    //         minval = vec->data[r][0];
-    //         minidx = r;
-    //     }
-    // }
 
     #pragma omp parallel for reduction(max:maxval)
     for (uint r = 0; r < vec->numRow; ++r)
@@ -82,28 +67,28 @@ void vecNormalize(Vector *vec)
         vec->data[r][0] /= sum;
 }
 
-// void matVec(DMatrix *mat, Vector *vec, Vector *res)
-// {
-//     // multiply compatible matrix and vector
+void matVec(DMatrix *mat, Vector *vec, Vector *res)
+{
+    // multiply compatible matrix and vector
 
     
 
-//     #pragma omp parallel for 
-//     for (uint r = 0; r < mat->numRow; ++r)
-//     {
-//         double tmp = 0.0;
-//         // res->data[r][0] = 0.0;
-//         #pragma omp parallel for reduction(+:tmp)
-//         for (uint c = 0; c < mat->numCol; ++c)
-//         {
-//             tmp += mat->data[r][c] * vec->data[c][0];
-//         }
+    #pragma omp parallel for 
+    for (uint r = 0; r < mat->numRow; ++r)
+    {
+        double tmp = 0.0;
+        // res->data[r][0] = 0.0;
+        #pragma omp parallel for reduction(+:tmp)
+        for (uint c = 0; c < mat->numCol; ++c)
+        {
+            tmp += mat->data[r][c] * vec->data[c][0];
+        }
 
-//         res->data[r][0] = tmp;
-//     }
+        res->data[r][0] = tmp;
+    }
 
-//     vecNormalize(res);
-// }
+    vecNormalize(res);
+}
 
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
 {
@@ -124,52 +109,17 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
     vecNormalize(res);
 }
 
-void matVecDampn(DMatrix *mat, Vector *vec, Vector *res)
+DMatrix *dampen(DMatrix *mat)
 {
     // multiply compatible matrix and vector
-    // utilize multiple threads
 
-    // int nthreads, tid;
-    
+    uint numpg = mat->numRow;
 
-    // #pragma omp parallel private(nthreads, tid)
-    // {
-    //     // Getting thread number
-    //     tid = omp_get_thread_num();
-    //     printf("thread id = %d\n", tid);
+    for (uint r = 0; r < mat->numRow; ++r)
+        for (uint c = 0; c < mat->numCol; ++c)
+            mat->data[r][c] = Q / numpg + (1.0 - Q) * (mat->data[r][c] + (c == numpg - 1) ? 1.0 / numpg : 0.0);
 
-
-        #pragma omp parallel for
-        for (uint r = 0; r < mat->numRow; ++r)
-        {
-            double tmp = 0.0;
-            // res->data[r][0] = 0.0;
-
-            #pragma omp parallel for reduction(+:tmp)
-            for (uint c = 0; c < mat->numCol; ++c)
-            {
-                tmp += mat->data[r][c] * vec->data[c][0];
-            }
-
-            uint numpg = vec->numRow;
-            double interm =  (Q + (1 - Q) * vec->data[numpg - 1][0]) / numpg;
-            // following is the expression for a row of Gx
-            res->data[r][0] = tmp * (1 - Q) + interm;
-                             
-        }
-
-        // if (tid == 0)
-        // {
-        //     // Only master thread does this
-        //     nthreads = omp_get_num_threads();
-        //     printf("Number of threads = %d\n",
-        //            nthreads);
-        // }
-    // }
-
-    vecNormalize(res);
+    return mat;
 }
-
-
 
 #endif // DENSE_MAT

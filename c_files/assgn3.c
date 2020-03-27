@@ -1,5 +1,6 @@
 /* Assignment 1 source code */
 
+// #include <omp.h>
 #include <stdio.h>
 #include "libs/pagerankMPI.h"
 
@@ -17,16 +18,25 @@ int main(int argc, char *argv[])
     // display the H matrix
     printDMatrix(H);
 
+    DMatrix *G = dampen(H);
+
+    printf("Dampened Matrix\n");
+    printDMatrix(G);
+
     //prints pagerank vector before matvec
+    printf("pagerank vector before web surfing\n");
     printDMatrix(pgrkV);
 
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter)
-        matVecDampn(H, pgrkV, pgrkV);
+        matVec(G, pgrkV, pgrkV); // parallelized matVecDampn
     // matVec(mymat, myvec, myvec);
 
     if (numpg <= 16)
+    { // print the page rank vector is small
+        printf("pagerank vector after web surfing\n");
         printDMatrix(pgrkV);
+    }
 
     // display lowest and highest page ranks
     minmaxPageRank(pgrkV);
