@@ -1,5 +1,3 @@
-// page rank with multithread using OpenMP
-
 #ifndef PAGERANKOMP_H
 #define PAGERANKOMP_H
 
