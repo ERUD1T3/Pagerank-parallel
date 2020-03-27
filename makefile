@@ -1,7 +1,7 @@
 all: assgn1 assgn2 assgn3 assgnextra test
 
 test:
-	gcc -o ./bin/t ./c_files/test.c
+	gcc -ggdb -o ./bin/t ./c_files/test.c
 
 assgn1:
 	gcc -fopenmp -o ./bin/pgrk1 ./c_files/assgn1.c

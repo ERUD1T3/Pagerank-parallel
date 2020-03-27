@@ -99,6 +99,8 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
     vecNormalize(res);
 }
 
+
+
 DMatrix *dampen(DMatrix *mat)
 {
     // multiply compatible matrix and vector

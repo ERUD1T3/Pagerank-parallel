@@ -7,7 +7,7 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/bin/pgrk_debug",
+        "program": "${workspaceFolder}/bin/t",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",

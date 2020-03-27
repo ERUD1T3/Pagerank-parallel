@@ -9,18 +9,19 @@ int main(int argc, char *argv[])
     //reading number of pages from terminal
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
 
+    printf("number of pages = %d\n", numpg);
+
     // create the H matrix
     DMatrix *H = initDMatrix(numpg);
-
-    // create and initialize at the pagerank Vector
     Vector *pgrkV = initVector(numpg);
 
     // display the H matrix
+    printf("H matrix = \n");
     printDMatrix(H);
 
     DMatrix *G = dampen(H);
 
-    printf("Dampened Matrix\n");
+    printf("Dampened Matrix = \n");
     printDMatrix(G);
 
     //prints pagerank vector before matvec
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     }
 
     // display lowest and highest page ranks
+    printf("page rank results: \n");
     minmaxPageRank(pgrkV);
 
     // garbage management
