@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
     // display the H matrix
     printDMatrix(H);
 
-    DMatrix *G = dampen(H);
+    dampen(H);
 
     printf("Dampened Matrix\n");
-    printDMatrix(G);
+    printDMatrix(H);
 
     //prints pagerank vector before matvec
     printf("pagerank vector before web surfing\n");
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter)
-        matVec(G, pgrkV, pgrkV); // parallelized matVecDampn
+        matVec(H, pgrkV, pgrkV); // parallelized matVecDampn
     // matVec(mymat, myvec, myvec);
 
     if (numpg <= 16)

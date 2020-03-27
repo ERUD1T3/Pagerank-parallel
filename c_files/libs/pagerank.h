@@ -85,6 +85,7 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
 {
 
     double tmp = 0.0;
+
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
 
@@ -93,7 +94,7 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
             tmp += mat->nnzels[c] * vec->data[mat->colidx[c]][0];
         }
 
-        res->data[r][0] = tmp;
+        res->data[r][0] = tmp * (1-Q) + Q / vec->numRow;
     }
 
     vecNormalize(res);
@@ -109,7 +110,7 @@ DMatrix *dampen(DMatrix *mat)
 
     for (uint r = 0; r < mat->numRow; ++r)
         for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = Q / numpg + (1.0 - Q) * (mat->data[r][c] + (c == numpg - 1) ? 1.0 / numpg : 0.0);
+            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
 
     return mat;
 }
