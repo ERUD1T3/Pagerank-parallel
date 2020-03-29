@@ -3,11 +3,12 @@
 #ifndef PAGERANKMPI_H
 #define PAGERANKMPI_H
 
-#include "mpi.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "dmatrix.h"
 #include "smatrix.h"
+#include "mpi.h"
 
 //constants
 #define Q .15  // dampening factor
@@ -15,19 +16,23 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
+
+/* non -parallel */
 void minmaxPageRank(Vector *vec);
-void vecNormalize(Vector *vec);                      // normalize values of surfer values
-void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
-DMatrix *dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
+DMatrix *dampen(DMatrix *H);    
+
+/* parallel */
+void vecNormalize(Vector *vec, uint pid, uint numprocs);                      // normalize values of surfer values
+void matVec(DMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs); // multiply compatible matrix and vector
+void matVecSp(SMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs);
+                     // transform H matrix into G (dampened) matrix
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
 void minmaxPageRank(Vector *vec)
 {
     // return the max and min values in the vector, as well as their indices
-    // parallelized
-    double minval = vec->data[0][0], maxval = vec->data[0][0];
+     double minval = vec->data[0][0], maxval = vec->data[0][0];
     uint minidx = 0, maxidx = 0;
 
     for (uint r = 0; r < vec->numRow; ++r)
@@ -37,10 +42,7 @@ void minmaxPageRank(Vector *vec)
             maxval = vec->data[r][0];
             maxidx = r;
         }
-    }
 
-    for (uint r = 0; r < vec->numRow; ++r)
-    {
         if (vec->data[r][0] <= minval)
         {
             minval = vec->data[r][0];
@@ -52,7 +54,23 @@ void minmaxPageRank(Vector *vec)
            minidx, minval, maxidx, maxval);
 }
 
-void vecNormalize(Vector *vec)
+DMatrix *dampen(DMatrix *mat)
+{
+    // multiply compatible matrix and vector
+
+    uint numpg = mat->numRow;
+
+    for (uint r = 0; r < mat->numRow; ++r)
+        for (uint c = 0; c < mat->numCol; ++c)
+            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
+
+    return mat;
+}
+
+
+
+/////////////////////////////////////////////////////////////////////
+void vecNormalize(Vector *vec, uint pid, uint numprocs)
 {
     // normalize the content of vector to sum up to one
     // parallelized vecNormalize
@@ -65,15 +83,19 @@ void vecNormalize(Vector *vec)
         vec->data[r][0] /= sum;
 }
 
-void matVec(DMatrix *mat, Vector *vec, Vector *res)
+void matVec(DMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs)
 {
     // multiply compatible matrix and vector
 
+    // uint numprocs, pid;
+    double tmp;
     
 
-    for (uint r = 0; r < mat->numRow; ++r)
+
+    for (uint r = pid + 1; r < mat->numRow; r += numprocs)
     {
-        double tmp = 0.0;
+        
+        tmp = 0.0;
         // res->data[r][0] = 0.0;
   
         for (uint c = 0; c < mat->numCol; ++c)
@@ -81,13 +103,16 @@ void matVec(DMatrix *mat, Vector *vec, Vector *res)
             tmp += mat->data[r][c] * vec->data[c][0];
         }
 
+        // MPI_Reduce(&tmp, &sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
         res->data[r][0] = tmp;
     }
 
-    vecNormalize(res);
+    vecNormalize(res, pid, numprocs);
+    
 }
 
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
+void matVecSp(SMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs)
 {
    
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
@@ -104,20 +129,7 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
         res->data[r][0] = tmp * (1-Q) + Q / vec->numRow;
     }
 
-    vecNormalize(res);
-}
-
-DMatrix *dampen(DMatrix *mat)
-{
-    // multiply compatible matrix and vector
-
-    uint numpg = mat->numRow;
-
-    for (uint r = 0; r < mat->numRow; ++r)
-        for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
-
-    return mat;
+    vecNormalize(res, pid, numprocs);
 }
 
 

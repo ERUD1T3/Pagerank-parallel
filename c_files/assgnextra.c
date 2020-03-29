@@ -2,9 +2,18 @@
 
 #include <stdio.h>
 #include "libs/pagerankMPI.h"
+#include "mpi.h"
 
 int main(int argc, char *argv[])
 {
+    MPI_Init(&argc, &argv);
+
+    MPI_Status status;
+    int pid, numprocs; // process id and number of processes
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &pid);
+    MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+    
     //reading number of pages from terminal
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
 
@@ -22,10 +31,15 @@ int main(int argc, char *argv[])
     //prints pagerank vector before matvec
     printDMatrix(pgrkV);
 
+
+
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter)
-        matVecSp(S, pgrkV, pgrkV);
+        matVecSp(S, pgrkV, pgrkV, pid, numprocs);
     // matVec(mymat, myvec, myvec);
+
+
+
 
     if (numpg <= 16)
         printDMatrix(pgrkV);
@@ -36,6 +50,10 @@ int main(int argc, char *argv[])
     // garbage management
     destroySMatrix(S);
     destroyDMatrix(pgrkV);
+
+
+
+    MPI_Finalize();
 
     return 0;
 }

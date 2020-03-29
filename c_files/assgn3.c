@@ -1,11 +1,20 @@
 /* Assignment 1 source code */
 
-// #include <omp.h>
 #include <stdio.h>
+#include "mpi.h"
 #include "libs/pagerankMPI.h"
 
 int main(int argc, char *argv[])
 {
+    MPI_Init(&argc, &argv);
+
+    MPI_Status status;
+    int pid, numprocs; // process id and number of processes
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &pid);
+    MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+    
+
     //reading number of pages from terminal
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
 
@@ -29,7 +38,7 @@ int main(int argc, char *argv[])
 
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter)
-        matVec(H, pgrkV, pgrkV); // parallelized matVecDampn
+        matVec(H, pgrkV, pgrkV, pid, numprocs); // parallelized matVecDampn
     // matVec(mymat, myvec, myvec);
 
     if (numpg <= 16)
@@ -44,6 +53,8 @@ int main(int argc, char *argv[])
     // garbage management
     destroyDMatrix(H);
     destroyDMatrix(pgrkV);
+
+    MPI_Finalize();
 
     return 0;
 }

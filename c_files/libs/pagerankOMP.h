@@ -13,22 +13,23 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
+
+/* non parallel */
 void minmaxPageRank(Vector *vec);
+DMatrix *dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
+
+/* parallel */
 void vecNormalize(Vector *vec);                      // normalize values of surfer values
 void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
-DMatrix *dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
 void minmaxPageRank(Vector *vec)
 {
-    // return the max and min values in the vector, as well as their indices
-    // parallelized
     double minval = vec->data[0][0], maxval = vec->data[0][0];
     uint minidx = 0, maxidx = 0;
 
-    #pragma omp parallel for reduction(max:maxval)
     for (uint r = 0; r < vec->numRow; ++r)
     {
         if (vec->data[r][0] >= maxval)
@@ -36,11 +37,7 @@ void minmaxPageRank(Vector *vec)
             maxval = vec->data[r][0];
             maxidx = r;
         }
-    }
 
-    #pragma omp parallel for reduction(min:minval)
-    for (uint r = 0; r < vec->numRow; ++r)
-    {
         if (vec->data[r][0] <= minval)
         {
             minval = vec->data[r][0];
@@ -51,6 +48,24 @@ void minmaxPageRank(Vector *vec)
     printf("X[min = %d] = %.2lf | X[max = %d] = %.2lf\n",
            minidx, minval, maxidx, maxval);
 }
+
+
+
+DMatrix *dampen(DMatrix *mat)
+{
+    // multiply compatible matrix and vector
+
+    uint numpg = mat->numRow;
+
+    for (uint r = 0; r < mat->numRow; ++r)
+        for (uint c = 0; c < mat->numCol; ++c)
+            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c] ;
+
+    return mat;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
 
 void vecNormalize(Vector *vec)
 {
@@ -110,17 +125,6 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
     vecNormalize(res);
 }
 
-DMatrix *dampen(DMatrix *mat)
-{
-    // multiply compatible matrix and vector
 
-    uint numpg = mat->numRow;
-
-    for (uint r = 0; r < mat->numRow; ++r)
-        for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c] ;
-
-    return mat;
-}
 
 #endif // DENSE_MAT
