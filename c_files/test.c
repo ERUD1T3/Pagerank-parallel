@@ -6,9 +6,6 @@
 
 int main(int argc, char *argv[])
 {
-
-
-    
     //reading number of pages from terminal
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
 
@@ -30,9 +27,11 @@ int main(int argc, char *argv[])
     printDMatrix(pgrkV2);
 
     // apply matvec with dampening on for 1000 iterations
-    for (uint iter = 0; iter < K; ++iter)
-        matVecSp(S, pgrkV2, pgrkV2);
-    // matVec(mymat, myvec, myvec);
+    for (uint iter = 0; iter < K; ++iter) {
+        pgrkV2 = matVecSp(S, pgrkV2); // parallelized matVecDampn
+        printf("pagerank after iter %d \n", iter);
+        printDMatrix(pgrkV2);
+    }
 
     if (numpg <= 16)
     { // print the page rank vector is small
@@ -60,22 +59,17 @@ int main(int argc, char *argv[])
     // display the H matrix
     printDMatrix(H);
 
-    // DMatrix *G = dampen(H);
-
-    // printf("Dampened Matrix\n");
-    // printDMatrix(G);
-
     //prints pagerank vector before matvec
     printf("pagerank vector before web surfing\n");
     printDMatrix(pgrkV);
 
-    dampen(H);
+    // dampen(H);
     
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) {
-        
-        matVec(H, pgrkV, pgrkV); // parallelized matVecDampn
-        
+        pgrkV = matVec(H, pgrkV); // parallelized matVecDampn
+        printf("pagerank after iter %d\n", iter);
+        printDMatrix(pgrkV);
     }
 
     if (numpg <= 16)

@@ -8,8 +8,9 @@
 #include "smatrix.h"
 
 //constants
-#define Q .15  // dampening factor
-#define K 1000 // number of matvec iterations
+// #define Q .15  // dampening factor
+#define K 2//1000 // number of matvec iterations
+const double Q = .15;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
@@ -20,8 +21,8 @@ DMatrix *dampen(DMatrix *H);                         // transform H matrix into 
 
 /* parallel */
 void vecNormalize(Vector *vec);                      // normalize values of surfer values
-void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
+Vector* matVec(DMatrix *mat, Vector *vec); // multiply compatible matrix and vector
+Vector* matVecSp(SMatrix *mat, Vector *vec);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
@@ -61,6 +62,8 @@ DMatrix *dampen(DMatrix *mat)
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c] ;
 
+ printf("Dampened : \n");
+    printDMatrix(mat);
     return mat;
 }
 
@@ -74,26 +77,32 @@ void vecNormalize(Vector *vec)
     double sum = 0;
 
     #pragma omp parallel for reduction(+:sum)
-    for (uint r = 0; r < vec->numRow; ++r)
+    for (uint r = 0; r < vec->numRow; ++r) {
+        int myid = omp_get_thread_num();
         sum += vec->data[r][0];
+        printf("\nmyid= %d and sum= %.2lf\n", myid, sum);
+    }
+
+       
 
     #pragma omp parallel for
     for (uint r = 0; r < vec->numRow; ++r)
         vec->data[r][0] /= sum;
 }
 
-void matVec(DMatrix *mat, Vector *vec, Vector *res)
+Vector* matVec(DMatrix *mat, Vector *vec)
 {
     // multiply compatible matrix and vector
 
-    
+    Vector *res = initVector(vec->numRow);
+    dampen(mat);
 
     #pragma omp parallel for 
     for (uint r = 0; r < mat->numRow; ++r)
     {
         double tmp = 0.0;
         // res->data[r][0] = 0.0;
-        #pragma omp parallel for reduction(+:tmp)
+        // #pragma omp parallel for reduction(+:tmp)
         for (uint c = 0; c < mat->numCol; ++c)
         {
             tmp += mat->data[r][c] * vec->data[c][0];
@@ -103,16 +112,20 @@ void matVec(DMatrix *mat, Vector *vec, Vector *res)
     }
 
     vecNormalize(res);
+    destroyDMatrix(vec);
+    return res;
 }
 
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
+Vector* matVecSp(SMatrix *mat, Vector *vec)
 {
+
+    Vector *res = initVector(vec->numRow);
     #pragma omp parallel for
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
         double tmp = 0.0;
         // res->data[r][0] = 0.0;
-        #pragma omp parallel for reduction(+:tmp)
+        // #pragma omp parallel for reduction(+:tmp)
         for (uint c = mat->rowidx[r]; c < mat->rowidx[r + 1]; ++c)
         {
             tmp += mat->nnzels[c] * vec->data[mat->colidx[c]][0];
@@ -123,6 +136,8 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
     }
 
     vecNormalize(res);
+    destroyDMatrix(vec);
+    return res;
 }
 
 

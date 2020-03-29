@@ -8,16 +8,16 @@
 #include "smatrix.h"
 
 //constants
-#define Q .15  // dampening factor
-#define K 1000 // number of matvec iterations
+#define K 2//1000 // number of matvec iterations
 
+const double Q = .15;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
 void minmaxPageRank(Vector *vec);
 void vecNormalize(Vector *vec);                      // normalize values of surfer values
 DMatrix *dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
-void matVec(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res);
+Vector* matVec(DMatrix *mat, Vector *vec); // multiply compatible matrix and vector
+Vector* matVecSp(SMatrix *mat, Vector *vec);
 // void matVecDampn(DMatrix *mat, Vector *vec, Vector *res); // multiply compatible matrix and vector
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ void vecNormalize(Vector *vec)
 {
     // normalize the content of vector to sum up to one
     // parallelized vecNormalize
-    double sum = 0;
+    double sum = 0.0;
 
     for (uint r = 0; r < vec->numRow; ++r)
         sum += vec->data[r][0];
@@ -61,11 +61,14 @@ void vecNormalize(Vector *vec)
         vec->data[r][0] /= sum;
 }
 
-void matVec(DMatrix *mat, Vector *vec, Vector *res)
+Vector* matVec(DMatrix *mat, Vector *vec)
 {
     // multiply compatible matrix and vector
+    // create and initialize at the pagerank Vector
+    Vector *res = initVector(vec->numRow);
 
     double tmp = 0.0;
+    dampen(mat);
 
     for (uint r = 0; r < mat->numRow; ++r)
     {
@@ -79,11 +82,13 @@ void matVec(DMatrix *mat, Vector *vec, Vector *res)
     }
 
     vecNormalize(res);
+    destroyDMatrix(vec);
+    return res;
 }
 
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
+Vector* matVecSp(SMatrix *mat, Vector *vec)
 {
-
+    Vector *res = initVector(vec->numRow);
     double tmp = 0.0;
 
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
@@ -93,11 +98,13 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res)
         {
             tmp += mat->nnzels[c] * vec->data[mat->colidx[c]][0];
         }
-
+        // dampening
         res->data[r][0] = tmp * (1-Q) + Q / vec->numRow;
     }
 
     vecNormalize(res);
+    destroyDMatrix(vec);
+    return res;
 }
 
 
@@ -112,6 +119,8 @@ DMatrix *dampen(DMatrix *mat)
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
 
+    printf("Dampened : \n");
+    printDMatrix(mat);
     return mat;
 }
 

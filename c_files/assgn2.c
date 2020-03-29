@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     DMatrix *tmp = initDMatrix(numpg);
     SMatrix *S = initSMatrix(numpg, tmp->data);
     destroyDMatrix(tmp);
-    Vector *pgrkV = initVector(numpg);
+    Vector* pgrkV2 = initVector(numpg);
 
     // display the S matrix
     printf("S matrix = \n");
@@ -22,26 +22,28 @@ int main(int argc, char *argv[])
 
     //prints pagerank vector before matvec
     printf("pagerank vector before web surfing\n");
-    printDMatrix(pgrkV);
+    printDMatrix(pgrkV2);
 
     // apply matvec with dampening on for 1000 iterations
-    for (uint iter = 0; iter < K; ++iter)
-        matVecSp(S, pgrkV, pgrkV);
-    // matVec(mymat, myvec, myvec);
+    for (uint iter = 0; iter < K; ++iter) {
+        pgrkV2 = matVecSp(S, pgrkV2); // parallelized matVecDampn
+        printf("pagerank after iter %d \n", iter);
+        printDMatrix(pgrkV2);
+    }
 
     if (numpg <= 16)
     { // print the page rank vector is small
         printf("pagerank vector after web surfing\n");
-        printDMatrix(pgrkV);
+        printDMatrix(pgrkV2);
     }
 
     // display lowest and highest page ranks
     printf("page rank results: \n");
-    minmaxPageRank(pgrkV);
+    minmaxPageRank(pgrkV2);
 
     // garbage management
     destroySMatrix(S);
-    destroyDMatrix(pgrkV);
+    destroyDMatrix(pgrkV2);
 
     return 0;
 }
