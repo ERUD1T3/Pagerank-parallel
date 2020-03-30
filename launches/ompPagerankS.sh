@@ -14,4 +14,4 @@
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 ## change n to modify number gridpoints in the rod
 ## change s to modify number of outer jacobi sweeps or iterations
-./bin/pgrk3 1600
+./bin/pgrk2 1600

@@ -45,7 +45,7 @@
 ## the -n option from mpirun. If your job has any form of
 ## threading (ex, OpenMP), you may want to also uncomment
 ## --cpu_per_task
-#SBATCH --ntasks 1
+#SBATCH --ntasks 2
 
 ## SBATCH --mem [memory]
 ## Amount of memory your job needs per node, regardless of the
@@ -83,8 +83,8 @@
 ## output will be truncated, NOT appended. These options support substitution     
 ## characters. (ex, %J will be replaced	with the job id, prevents overwriting
 ## of output)
-#SBATCH --error=./outputs/pagerank_omp.%J.err
-#SBATCH	--output=./outputs/pagerank_omp.%j.out
+#SBATCH --error=./outputs/pagerank_mpi.%J.err
+#SBATCH	--output=./outputs/pagerank_mpi.%j.out
 
 
 ######################################
@@ -102,5 +102,5 @@
 ## the -n option: the number of tasks is taken from
 ## SLURM's --ntasks option.
 
-mpiexec ./bin/pgrk2 1600
+mpiexec ./bin/pgrk3 3
 
