@@ -95,6 +95,7 @@ Vector* matVec(DMatrix *mat, Vector *vec)
     // multiply compatible matrix and vector
 
     Vector *res = initVector(vec->numRow);
+    fillDMatrix(res, 0.0);
     dampen(mat);
 
     #pragma omp parallel for 
@@ -120,7 +121,7 @@ Vector* matVecSp(SMatrix *mat, Vector *vec)
 {
 
     Vector *res = initVector(vec->numRow);
-
+    fillDMatrix(res, 0.0);
 
     #pragma omp parallel for
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
