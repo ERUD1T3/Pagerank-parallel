@@ -8,18 +8,28 @@
 typedef unsigned int uint;
 typedef struct dmatrix DMatrix;
 typedef struct dmatrix Vector; // typedef for Vector based on DMatrix
-
+typedef struct pair Pair;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
 DMatrix *initDMatrix(uint numpg); //initialize new dense matrix
+DMatrix *initDMatrixP(uint rowsize, uint colsize);
 Vector *initVector(uint numpg);   // intialize a new vector
+Vector *initVectorP(uint size, uint numpg);
 void printDMatrix(DMatrix *dmat);
 void fillDMatrix(DMatrix *mat, double val);
 void fillDMatrixfromData(DMatrix *mat, double data[10][10]);
 void destroyDMatrix(DMatrix *mat);
+uint globalIndex(uint pid, uint localIndex, uint npp);
+Pair localIndex(uint glocalIndex, uint npp);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
+
+struct pair 
+{
+    uint pid, localIndex;
+};
+
 struct dmatrix
 {
     //square matrix
@@ -56,6 +66,28 @@ DMatrix *initDMatrix(uint numpg)
     return matrix;
 }
 
+
+DMatrix *initDMatrixP(uint rowsize, uint colsize)
+{
+    //initialize a new Dense matrix for rangking algorithm
+
+    // create pointer to matrix
+    DMatrix *matrix = (DMatrix *)malloc(sizeof(DMatrix));
+    // matrix->numpg = numpg;
+    matrix->numCol = rowsize;
+    matrix->numRow = colsize;
+
+    // setting up data matrix to zeros
+    matrix->data = (double **)malloc(rowsize * sizeof(double *));
+    for (uint r = 0; r < rowsize; ++r)
+        matrix->data[r] = (double *)malloc(colsize * sizeof(double));
+
+    fillDMatrix(matrix, 0.0);
+
+    return matrix;
+}
+
+
 void destroyDMatrix(DMatrix *mat)
 {
     // detroy matrix object and free its memory
@@ -77,6 +109,23 @@ Vector *initVector(uint numpg)
     // setting up data matrix to zeros
     vec->data = (double **)malloc(numpg * sizeof(double *));
     for (uint r = 0; r < numpg; ++r)
+        vec->data[r] = (double *)malloc(sizeof(double));
+
+    fillDMatrix(vec, 1.0 / numpg);
+    return vec;
+}
+
+Vector *initVectorP(uint size, uint numpg)
+{
+    //initialize the surf vector
+    Vector *vec = (Vector *)malloc(sizeof(Vector));
+    // vec->numpg = numpg;
+    vec->numRow = size;
+    vec->numCol = 1;
+
+    // setting up data matrix to zeros
+    vec->data = (double **)malloc(size * sizeof(double *));
+    for (uint r = 0; r < size; ++r)
         vec->data[r] = (double *)malloc(sizeof(double));
 
     fillDMatrix(vec, 1.0 / numpg);
@@ -114,5 +163,18 @@ void fillDMatrixfromData(DMatrix *mat, double data[10][10])
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = data[r][c];
 }
+
+uint globalIndex(uint pid, uint localIndex, uint npp) {
+    return pid*npp + localIndex;
+}
+
+Pair localIndex(uint glocalIndex, uint npp) {
+    Pair res;
+    res.pid = glocalIndex/npp;
+    res.localIndex = glocalIndex%npp;
+
+    return res;
+}
+
 
 #endif // DENSE_MATRIX_H

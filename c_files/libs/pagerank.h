@@ -48,6 +48,22 @@ void minmaxPageRank(Vector *vec)
            minidx, minval, maxidx, maxval);
 }
 
+DMatrix *dampen(DMatrix *mat)
+{
+    // multiply compatible matrix and vector
+
+    uint numpg = mat->numRow;
+
+    for (uint r = 0; r < mat->numRow; ++r)
+        for (uint c = 0; c < mat->numCol; ++c)
+            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
+
+    printf("Dampened : \n");
+    printDMatrix(mat);
+    return mat;
+}
+
+///////////////////////////////////////////////////////////////////////
 void vecNormalize(Vector *vec)
 {
     // normalize the content of vector to sum up to one
@@ -109,19 +125,6 @@ Vector* matVecSp(SMatrix *mat, Vector *vec)
 
 
 
-DMatrix *dampen(DMatrix *mat)
-{
-    // multiply compatible matrix and vector
 
-    uint numpg = mat->numRow;
-
-    for (uint r = 0; r < mat->numRow; ++r)
-        for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
-
-    printf("Dampened : \n");
-    printDMatrix(mat);
-    return mat;
-}
 
 #endif // DENSE_MAT

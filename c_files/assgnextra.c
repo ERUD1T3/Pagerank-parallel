@@ -21,30 +21,37 @@ int main(int argc, char *argv[])
     DMatrix *tmp = initDMatrix(numpg);
     SMatrix *S = initSMatrix(numpg, tmp->data);
     destroyDMatrix(tmp);
-
-    // create and initialize at the pagerank Vector
     Vector *pgrkV = initVector(numpg);
 
     // display the S matrix
+    printf("S matrix = \n");
     printSMatrix(S);
 
     //prints pagerank vector before matvec
+    printf("pagerank vector before web surfing\n");
     printDMatrix(pgrkV);
 
 
 
     // apply matvec with dampening on for 1000 iterations
-    for (uint iter = 0; iter < K; ++iter)
-        matVecSp(S, pgrkV, pgrkV, pid, numprocs);
-    // matVec(mymat, myvec, myvec);
+    for (uint iter = 0; iter < K; ++iter) {
+        pgrkV = matVecSp(S, pgrkV, pid, numprocs);
+        printf("pagerank after iter %d \n", iter);
+        printDMatrix(pgrkV2);
+    }
 
 
 
 
-    if (numpg <= 16)
+   if (numpg <= 16)
+    { // print the page rank vector is small
+        printf("pagerank vector after web surfing\n");
         printDMatrix(pgrkV);
+    }
+
 
     // display lowest and highest page ranks
+    printf("page rank results: \n");
     minmaxPageRank(pgrkV);
 
     // garbage management

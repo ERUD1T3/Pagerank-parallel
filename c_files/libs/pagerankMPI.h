@@ -11,8 +11,9 @@
 #include "mpi.h"
 
 //constants
-#define Q .15  // dampening factor
-#define K 1000 // number of matvec iterations
+// #define Q .15  // dampening factor
+#define K 2 // number of matvec iterations
+const double Q = .15;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
@@ -23,8 +24,8 @@ DMatrix *dampen(DMatrix *H);
 
 /* parallel */
 void vecNormalize(Vector *vec, uint pid, uint numprocs);                      // normalize values of surfer values
-void matVec(DMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs); // multiply compatible matrix and vector
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs);
+Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs); // multiply compatible matrix and vector
+Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint numprocs);
                      // transform H matrix into G (dampened) matrix
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,6 +65,8 @@ DMatrix *dampen(DMatrix *mat)
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
 
+    printf("Dampened : \n");
+    printDMatrix(mat);
     return mat;
 }
 
@@ -76,22 +79,26 @@ void vecNormalize(Vector *vec, uint pid, uint numprocs)
     // parallelized vecNormalize
     double sum = 0;
 
+    // mpi allReduce
     for (uint r = 0; r < vec->numRow; ++r)
         sum += vec->data[r][0];
 
+    // divide your copy of x
     for (uint r = 0; r < vec->numRow; ++r)
         vec->data[r][0] /= sum;
 }
 
-void matVec(DMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs)
+Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
 {
     // multiply compatible matrix and vector
 
-    // uint numprocs, pid;
+    Vector *res = initVector(vec->numRow);
+    dampen(mat); //dampen own copy of matrix
+
     double tmp;
     
 
-
+    // allGather X everywhere
     for (uint r = pid + 1; r < mat->numRow; r += numprocs)
     {
         
@@ -109,12 +116,14 @@ void matVec(DMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs)
     }
 
     vecNormalize(res, pid, numprocs);
+    destroyDMatrix(vec);
+    return res;
     
 }
 
-void matVecSp(SMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs)
+Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint numprocs)
 {
-   
+    Vector *res = initVector(vec->numRow);
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
         double tmp = 0.0;
@@ -130,6 +139,8 @@ void matVecSp(SMatrix *mat, Vector *vec, Vector *res, uint pid, uint numprocs)
     }
 
     vecNormalize(res, pid, numprocs);
+    destroyDMatrix(vec);
+    return res;
 }
 
 
