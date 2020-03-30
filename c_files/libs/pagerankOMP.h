@@ -9,7 +9,7 @@
 
 //constants
 // #define Q .15  // dampening factor
-#define K 2//1000 // number of matvec iterations
+#define K 1000 // number of matvec iterations
 const double Q = .15;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ void vecNormalize(Vector *vec)
     for (uint r = 0; r < vec->numRow; ++r) {
         int myid = omp_get_thread_num();
         sum += vec->data[r][0];
-        printf("\nmyid= %d and sum= %.2lf\n", myid, sum);
+        // printf("\nmyid= %d and sum= %.2lf\n", myid, sum);
     }
 
        
@@ -121,13 +121,14 @@ Vector* matVecSp(SMatrix *mat, Vector *vec)
 
     Vector *res = initVector(vec->numRow);
 
-    
+
     #pragma omp parallel for
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
         double tmp = 0.0;
         // res->data[r][0] = 0.0;
-        // #pragma omp parallel for reduction(+:tmp)
+
+        #pragma omp parallel for reduction(+:tmp)
         for (uint c = mat->rowidx[r]; c < mat->rowidx[r + 1]; ++c)
         {
             tmp += mat->nnzels[c] * vec->data[mat->colidx[c]][0];
