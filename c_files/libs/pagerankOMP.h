@@ -62,8 +62,8 @@ DMatrix *dampen(DMatrix *mat)
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c] ;
 
- printf("Dampened : \n");
-    printDMatrix(mat);
+//  printf("Dampened : \n");
+//     printDMatrix(mat);
     return mat;
 }
 
@@ -74,7 +74,7 @@ void vecNormalize(Vector *vec)
 {
     // normalize the content of vector to sum up to one
     // parallelized vecNormalize
-    double sum = 0;
+    double sum = 0.0;
 
     #pragma omp parallel for reduction(+:sum)
     for (uint r = 0; r < vec->numRow; ++r) {
@@ -120,6 +120,8 @@ Vector* matVecSp(SMatrix *mat, Vector *vec)
 {
 
     Vector *res = initVector(vec->numRow);
+
+    
     #pragma omp parallel for
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {

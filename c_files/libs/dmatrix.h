@@ -53,6 +53,7 @@ DMatrix *initDMatrix(uint numpg)
     for (uint r = 0; r < numpg; ++r)
         matrix->data[r] = (double *)malloc(numpg * sizeof(double));
 
+    fillDMatrix(matrix, 0.0);
     // fillDMatrix(matrix, 1.0 / numpg);
     matrix->data[0][numpg - 1] = .5;
     matrix->data[1][0] = 1.0;

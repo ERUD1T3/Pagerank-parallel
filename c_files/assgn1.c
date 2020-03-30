@@ -18,19 +18,19 @@ int main(int argc, char *argv[])
     Vector *pgrkV = initVector(numpg);
 
     // display the H matrix
-    printDMatrix(H);
+    // printDMatrix(H);
 
     //prints pagerank vector before matvec
-    printf("pagerank vector before web surfing\n");
-    printDMatrix(pgrkV);
+    // printf("pagerank vector before web surfing\n");
+    // printDMatrix(pgrkV);
 
     // dampen(H);
     
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) {
         pgrkV = matVec(H, pgrkV); // parallelized matVecDampn
-        printf("pagerank after iter %d\n", iter);
-        printDMatrix(pgrkV);
+        // printf("pagerank after iter %d\n", iter);
+        // printDMatrix(pgrkV);
     }
 
     if (numpg <= 16)
