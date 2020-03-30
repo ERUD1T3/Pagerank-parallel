@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     for (uint iter = 0; iter < K; ++iter) {
         pgrkV = matVecSp(S, pgrkV, pid, numprocs);
         printf("pagerank after iter %d \n", iter);
-        printDMatrix(pgrkV2);
+        printDMatrix(pgrkV);
     }
 
 
