@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
         printf("worker %d/%d ready to roll\n", omp_get_thread_num(), omp_get_num_threads());
     }  
 
+    /*timers*/
+    double startTime, endTime;
 
     // create the H matrix
     DMatrix *H = initDMatrix(numpg);
@@ -30,6 +32,8 @@ int main(int argc, char *argv[])
     //prints pagerank vector before matvec
     // printf("pagerank vector before web surfing\n");
     // printDMatrix(pgrkV);
+
+    startTime = omp_get_wtime();
 
     dampen(H);
     
@@ -48,6 +52,9 @@ int main(int argc, char *argv[])
 
     // display lowest and highest page ranks
     minmaxPageRank(pgrkV);
+
+    endTime = omp_get_wtime();
+    printf("\nruntime = %.16e\n", endTime - startTime);
 
     // garbage management
     destroyDMatrix(H);

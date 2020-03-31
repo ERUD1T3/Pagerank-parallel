@@ -36,7 +36,13 @@ int main(int argc, char *argv[])
     // printf("pid = %d and pagerank vector before web surfing\n", pid);
     // printDMatrix(pgrkV);
 
-    
+    /* timers */
+    double startTime, endTime;
+
+    if(pid == 0) 
+    {
+        startTime = MPI_Wtime(); 
+    }    
 
     // // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) {
@@ -91,6 +97,9 @@ int main(int argc, char *argv[])
         
         if(numpg <= 16) printDMatrix(totalV);
         minmaxPageRank(totalV);
+
+        endTime = MPI_Wtime();
+        printf("\nruntime = %.16f\n", endTime - startTime);
         // destroyDMatrix(totalV);
         // free(total);
     }

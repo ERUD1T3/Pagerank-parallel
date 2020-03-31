@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &pid);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 
-    
+    double startTime, endTime;
     
 
     //reading number of pages from terminal
@@ -39,7 +39,11 @@ int main(int argc, char *argv[])
     // printDMatrix(pgrkV);
 
     // fill partial H matrices based on mapping functions indices
-    fillDMatrixMultProc(pid, npp, numpg, H);    
+    fillDMatrixMultProc(pid, npp, numpg, H);  
+
+    if(pid == 0) {
+        startTime = MPI_Wtime();
+    }  
 
     dampen(H); //dampen own copy of matrix
     // apply matvec with dampening on for 1000 iterations
@@ -95,8 +99,15 @@ int main(int argc, char *argv[])
         
         if(numpg <= 16) printDMatrix(totalV);
         minmaxPageRank(totalV);
+
+        endTime = MPI_Wtime();
+        printf("\nruntime = %.16f\n", endTime - startTime);
+
+
         destroyDMatrix(totalV);
         free(total);
+
+        
     }
     free(tmp);
     

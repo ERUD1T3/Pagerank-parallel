@@ -28,6 +28,12 @@ int main(int argc, char *argv[])
     // printf("pagerank vector before web surfing\n");
     // printDMatrix(pgrkV2);
 
+    /* timer */
+    double startTime, endTime;
+
+    startTime = omp_get_wtime();
+
+
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) {
         pgrkV2 = matVecSp(S, pgrkV2); // parallelized matVecDampn
@@ -44,6 +50,9 @@ int main(int argc, char *argv[])
     // display lowest and highest page ranks
     printf("page rank results: \n");
     minmaxPageRank(pgrkV2);
+
+    endTime = omp_get_wtime();
+    printf("\nruntime = %.16e\n", endTime - startTime);
 
     // garbage management
     destroySMatrix(S);
