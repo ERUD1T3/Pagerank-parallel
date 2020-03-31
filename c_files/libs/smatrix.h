@@ -137,7 +137,7 @@ void printSMatrix(SMatrix *smat)
     //prints the SMatrix
     printf("\non zero elements: ");
     for (uint i = 0; i < smat->nnzelsN; ++i)
-        printf("%.2lf ", smat->nnzels[i]);
+        printf("%.6lf ", smat->nnzels[i]);
     printf("\ncolumn indices: ");
     for (uint i = 0; i < smat->colidxN; ++i)
         printf("%d ", smat->colidx[i]);

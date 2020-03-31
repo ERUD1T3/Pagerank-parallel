@@ -46,7 +46,7 @@ void minmaxPageRank(Vector *vec)
         }
     }
 
-    printf("X[min = %d] = %.2lf | X[max = %d] = %.2lf\n",
+    printf("X[min = %d] = %.6lf | X[max = %d] = %.6lf\n",
            minidx, minval, maxidx, maxval);
 }
 
@@ -80,7 +80,7 @@ void vecNormalize(Vector *vec)
     for (uint r = 0; r < vec->numRow; ++r) {
         int myid = omp_get_thread_num();
         sum += vec->data[r][0];
-        // printf("\nmyid= %d and sum= %.2lf\n", myid, sum);
+        // printf("\nmyid= %d and sum= %.6lf\n", myid, sum);
     }
 
        

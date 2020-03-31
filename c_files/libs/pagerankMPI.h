@@ -23,9 +23,9 @@ void minmaxPageRank(Vector *vec);
 DMatrix *dampen(DMatrix *H);    
 
 /* parallel */
-void vecNormalize(Vector *vec, uint pid, uint numprocs);                      // normalize values of surfer values
-Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs); // multiply compatible matrix and vector
-Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint npp, uint numprocs);
+void vecNormalize(Vector *vec);                      // normalize values of surfer values
+Vector* matVec(DMatrix *mat, Vector *vec); // multiply compatible matrix and vector
+Vector* matVecSp(SMatrix *mat, Vector *vec, uint npp);
 void fillDMatrixMultProc(uint pid, uint npp, uint numpg, DMatrix* H);
                      // transform H matrix into G (dampened) matrix
 
@@ -52,7 +52,7 @@ void minmaxPageRank(Vector *vec)
         }
     }
 
-    printf("X[min = %d] = %.2lf | X[max = %d] = %.2lf\n",
+    printf("X[min = %d] = %.6lf | X[max = %d] = %.6lf\n",
            minidx, minval, maxidx, maxval);
 }
 
@@ -74,7 +74,7 @@ DMatrix *dampen(DMatrix *mat)
 
 
 /////////////////////////////////////////////////////////////////////
-void vecNormalize(Vector *vec, uint pid, uint numprocs)
+void vecNormalize(Vector *vec)
 {
     // normalize the content of vector to sum up to one
     // parallelized vecNormalize
@@ -94,7 +94,7 @@ void vecNormalize(Vector *vec, uint pid, uint numprocs)
         vec->data[r][0] /= glob_sum;
 }
 
-Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
+Vector* matVec(DMatrix *mat, Vector *vec)
 {
     // multiply compatible matrix and vector
 
@@ -117,12 +117,12 @@ Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
         res->data[r][0] = tmp;
     }
 
-    vecNormalize(res, pid, numprocs);
+    vecNormalize(res);
     return res;
     
 }
 
-Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint npp, uint numprocs)
+Vector* matVecSp(SMatrix *mat, Vector *vec, uint npp)
 {
     Vector *res = initVectorV(npp, 0.0);
 
@@ -140,8 +140,8 @@ Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint npp, uint numprocs)
         res->data[r][0] = tmp * (1-Q) + Q / vec->numRow;
     }
 
-    vecNormalize(res, pid, numprocs);
-    destroyDMatrix(vec);
+    vecNormalize(res);
+    // destroyDMatrix(vec);
     return res;
 }
 

@@ -3,23 +3,29 @@ all: assgn1 assgn2 assgn3 assgnextra test
 test:
 	gcc -ggdb -o ./bin/t ./c_files/test.c
 
-assgn1:
+pgrk1:
 	gcc -fopenmp -o ./bin/pgrk1 ./c_files/assgn1.c
 
-assgn2:
+pgrk2:
 	gcc -fopenmp -o ./bin/pgrk2 ./c_files/assgn2.c
 
-assgn3:
+pgrk3:
 	mpicc -o ./bin/pgrk3 ./c_files/assgn3.c
 
-assgnextra:
+pgrkX:
 	mpicc -o ./bin/pgrkx ./c_files/assgnextra.c
 
-# debug:
-# 	gcc -ggdb -o ./bin/pgrk_debug ./c_files/main.c
+runt: 
+	./bin/t 8
 
-# run:
-# 	./bin/pgrk
+run1:
+	./bin/pgrk1 8
 
-runA3:
+run2:
+	./bin/pgrk2 8
+
+run3:
 	mpiexec ./bin/pgrk3 8
+
+runX:
+	mpiexec ./bin/pgrkx 8

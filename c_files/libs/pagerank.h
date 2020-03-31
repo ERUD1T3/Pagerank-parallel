@@ -44,7 +44,7 @@ void minmaxPageRank(Vector *vec)
         }
     }
 
-    printf("X[min = %d] = %.2lf | X[max = %d] = %.2lf\n",
+    printf("X[min = %d] = %.6lf | X[max = %d] = %.6lf\n",
            minidx, minval, maxidx, maxval);
 }
 

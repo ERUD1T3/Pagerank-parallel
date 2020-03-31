@@ -96,7 +96,6 @@ void destroyDMatrix(DMatrix *mat)
     // detroy matrix object and free its memory
     for (uint r = 0; r < mat->numRow; ++r)
         free(mat->data[r]);
-
     free(mat->data);
     free(mat);
 }
@@ -162,7 +161,7 @@ void printDMatrix(DMatrix *dmat)
         printf("[");
         for (uint c = 0; c < dmat->numCol; ++c)
         {
-            printf(" %.2lf", dmat->data[r][c]);
+            printf(" %.6lf", dmat->data[r][c]);
         }
         printf(" ]\n");
     }
