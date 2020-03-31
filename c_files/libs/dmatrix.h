@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "mpi.h"
 //typedefs
 typedef unsigned int uint;
 typedef struct dmatrix DMatrix;
@@ -95,7 +94,7 @@ void destroyDMatrix(DMatrix *mat)
 {
     // detroy matrix object and free its memory
     for (uint r = 0; r < mat->numRow; ++r)
-        free(mat->data[r]);
+        free((mat->data)[r]);
     free(mat->data);
     free(mat);
 }
