@@ -118,7 +118,6 @@ Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
     }
 
     vecNormalize(res, pid, numprocs);
-    destroyDMatrix(vec);
     return res;
     
 }

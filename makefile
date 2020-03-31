@@ -22,4 +22,4 @@ assgnextra:
 # 	./bin/pgrk
 
 runA3:
-	mpiexec ./bin/pgrk3
+	mpiexec ./bin/pgrk3 8

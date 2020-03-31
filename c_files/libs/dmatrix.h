@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "mpi.h"
 //typedefs
 typedef unsigned int uint;
 typedef struct dmatrix DMatrix;
@@ -76,13 +76,14 @@ DMatrix *initDMatrixV(uint rowsize, uint colsize, double val)
     // create pointer to matrix
     DMatrix *matrix = (DMatrix *)malloc(sizeof(DMatrix));
     // matrix->numpg = numpg;
-    matrix->numCol = rowsize;
-    matrix->numRow = colsize;
+    matrix->numRow = rowsize;
+    matrix->numCol = colsize;
 
     // setting up data matrix to zeros
     matrix->data = (double **)malloc(rowsize * sizeof(double *));
-    for (uint r = 0; r < rowsize; ++r)
+    for (uint r = 0; r < rowsize; ++r) {
         matrix->data[r] = (double *)malloc(colsize * sizeof(double));
+    }
 
     fillDMatrix(matrix, val);
 

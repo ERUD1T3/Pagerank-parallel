@@ -13,11 +13,14 @@ int main(int argc, char *argv[])
 
     MPI_Comm_rank(MPI_COMM_WORLD, &pid);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+
+    
     
 
     //reading number of pages from terminal
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
 
+    printf("Worker %d/%d ready to roll, numpg= %d\n", pid, numprocs, numpg);
     uint npp = numpg / numprocs; // determining the number of pages per processor
 
     // create the H matrix
@@ -72,15 +75,13 @@ int main(int argc, char *argv[])
     { // print the page rank vector is small
       
         double* total = NULL;
-        if(pid == 0) {
-            total = malloc(sizeof(double)*numpg);
-        }
+        if(pid == 0) total = malloc(sizeof(double)*numpg);
+        
     
         double* tmp = malloc(sizeof(double)*npp);
 
-        for(uint i = 0; i < npp; ++i) {
-            tmp[i] = pgrkV->data[i][0];
-        }
+        for(uint i = 0; i < npp; ++i) tmp[i] = pgrkV->data[i][0];
+        
         // MPI_Gather(...)
         MPI_Gather(tmp, npp, MPI_DOUBLE, total, npp, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         

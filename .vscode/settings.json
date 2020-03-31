@@ -11,6 +11,7 @@
         "pagerank.h": "c",
         "omp.h": "c",
         "pagerankmpi.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "tuple": "c"
     }
 }
