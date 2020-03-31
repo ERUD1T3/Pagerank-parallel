@@ -126,9 +126,10 @@ Vector* matVecSp(SMatrix *mat, Vector *vec, uint npp)
 {
     Vector *res = initVectorV(npp, 0.0);
 
+    double tmp;
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
-        double tmp = 0.0;
+        tmp = 0.0;
         // res->data[r][0] = 0.0;
 
         for (uint c = mat->rowidx[r]; c < mat->rowidx[r + 1]; ++c)
@@ -137,11 +138,10 @@ Vector* matVecSp(SMatrix *mat, Vector *vec, uint npp)
         }
 
         // res->data[r][0] = tmp;
-        res->data[r][0] = tmp * (1-Q) + Q / vec->numRow;
+        res->data[r][0] = tmp * (1 - Q) + Q / vec->numRow;
     }
 
     vecNormalize(res);
-    // destroyDMatrix(vec);
     return res;
 }
 

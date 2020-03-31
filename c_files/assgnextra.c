@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     DMatrix *tmpH = initDMatrixV(npp, numpg, 0.0);
     fillDMatrixMultProc(pid, npp, numpg, tmpH);
     SMatrix *S = initSMatrixP(numpg, tmpH->numRow, tmpH->numCol, tmpH->data);
-    destroyDMatrix(tmpH);
+    // destroyDMatrix(tmpH);
     Vector *pgrkV = initVectorP(npp, numpg);
 
     // // display the S matrix
@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
         // printf("pagerank after iter %d \n", iter);
         // printDMatrix(pgrkV);
 
-        destroyDMatrix(totalV);
-        free(tmp);
-        free(total);
+        // destroyDMatrix(totalV);
+        // free(tmp);
+        // free(total);
     }
 
 
@@ -91,15 +91,16 @@ int main(int argc, char *argv[])
         
         if(numpg <= 16) printDMatrix(totalV);
         minmaxPageRank(totalV);
-        destroyDMatrix(totalV);
-        free(total);
+        // destroyDMatrix(totalV);
+        // free(total);
     }
-    free(tmp);
+    // free(tmp);
    
 
     // garbage management
-    destroySMatrix(S);
-    destroyDMatrix(pgrkV);
+    // destroySMatrix(S);
+    // destroyDMatrix(pgrkV);
+
     MPI_Finalize();
 
     return 0;
