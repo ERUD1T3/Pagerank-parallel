@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
     printf("number of pages = %d\n", numpg);
 
+    #pragma omp parallel                   
+    {
+        printf("worker %d/%d ready to roll\n", omp_get_thread_num(), omp_get_num_threads());
+    }  
     // create the Sparse matrix S
     DMatrix *tmp = initDMatrix(numpg);
     SMatrix *S = initSMatrix(numpg, tmp->data);

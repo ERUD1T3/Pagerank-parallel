@@ -17,7 +17,7 @@ const double Q = .15;
 
 /* non parallel */
 void minmaxPageRank(Vector *vec);
-DMatrix *dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
+void dampen(DMatrix *H);                         // transform H matrix into G (dampened) matrix
 
 /* parallel */
 void vecNormalize(Vector *vec);                      // normalize values of surfer values
@@ -52,7 +52,7 @@ void minmaxPageRank(Vector *vec)
 
 
 
-DMatrix *dampen(DMatrix *mat)
+void dampen(DMatrix *mat)
 {
     // multiply compatible matrix and vector
 
@@ -64,7 +64,7 @@ DMatrix *dampen(DMatrix *mat)
 
 //  printf("Dampened : \n");
 //     printDMatrix(mat);
-    return mat;
+    // return mat;
 }
 
 
@@ -94,9 +94,9 @@ Vector* matVec(DMatrix *mat, Vector *vec)
 {
     // multiply compatible matrix and vector
 
-    Vector *res = initVector(vec->numRow);
-    fillDMatrix(res, 0.0);
-    dampen(mat);
+    Vector *res = initVectorV(vec->numRow, 0.0);
+    // fillDMatrix(res, 0.0);
+    // dampen(mat);
 
     #pragma omp parallel for 
     for (uint r = 0; r < mat->numRow; ++r)
@@ -120,8 +120,8 @@ Vector* matVec(DMatrix *mat, Vector *vec)
 Vector* matVecSp(SMatrix *mat, Vector *vec)
 {
 
-    Vector *res = initVector(vec->numRow);
-    fillDMatrix(res, 0.0);
+    Vector *res = initVectorV(vec->numRow, 0.0);
+    // fillDMatrix(res, 0.0);
 
     #pragma omp parallel for
     for (uint r = 0; r < mat->rowidxN - 1; ++r)

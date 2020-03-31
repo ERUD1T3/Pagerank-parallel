@@ -12,7 +12,7 @@
 
 //constants
 // #define Q .15  // dampening factor
-#define K 2 // number of matvec iterations
+#define K 1000 // number of matvec iterations
 const double Q = .15;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ const double Q = .15;
 
 /* non -parallel */
 void minmaxPageRank(Vector *vec);
-DMatrix *dampen(DMatrix *H);    
+void dampen(DMatrix *mat);    
 
 /* parallel */
 void vecNormalize(Vector *vec);                      // normalize values of surfer values
@@ -56,7 +56,7 @@ void minmaxPageRank(Vector *vec)
            minidx, minval, maxidx, maxval);
 }
 
-DMatrix *dampen(DMatrix *mat)
+void dampen(DMatrix *mat)
 {
     // multiply compatible matrix and vector
 
@@ -64,11 +64,11 @@ DMatrix *dampen(DMatrix *mat)
 
     for (uint r = 0; r < mat->numRow; ++r)
         for (uint c = 0; c < mat->numCol; ++c)
-            mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
+            mat->data[r][c] = (1.0 - Q) * mat->data[r][c] + Q / numpg;
 
     // printf("Dampened : \n");
     // printDMatrix(mat);
-    return mat;
+    // return mat;
 }
 
 
@@ -99,7 +99,7 @@ Vector* matVec(DMatrix *mat, Vector *vec)
     // multiply compatible matrix and vector
 
     Vector *res = initVectorV(mat->numRow, 0.0);
-    dampen(mat); //dampen own copy of matrix
+    // dampen(mat); //dampen own copy of matrix
 
     double tmp;
     

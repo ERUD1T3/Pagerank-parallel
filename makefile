@@ -16,16 +16,16 @@ pgrkX:
 	mpicc -o ./bin/pgrkx ./c_files/assgnextra.c
 
 runt: 
-	./bin/t 8
+	./bin/t 16
 
 run1:
-	./bin/pgrk1 8
+	./bin/pgrk1 16
 
 run2:
-	./bin/pgrk2 8
+	./bin/pgrk2 16
 
 run3:
-	mpiexec ./bin/pgrk3 8
+	mpiexec ./bin/pgrk3 16
 
 runX:
-	mpiexec ./bin/pgrkx 8
+	mpiexec ./bin/pgrkx 16

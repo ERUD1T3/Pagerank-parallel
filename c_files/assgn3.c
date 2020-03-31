@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
     // fill partial H matrices based on mapping functions indices
     fillDMatrixMultProc(pid, npp, numpg, H);    
 
+    dampen(H); //dampen own copy of matrix
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) 
     {
