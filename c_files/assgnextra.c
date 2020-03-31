@@ -17,42 +17,93 @@ int main(int argc, char *argv[])
     //reading number of pages from terminal
     uint numpg = (argc > 1) ? atoi(argv[1]) : 16;
 
+    uint npp = numpg/ numprocs;
+
     // create the Sparse matrix S
-    DMatrix *tmp = initDMatrix(numpg);
-    SMatrix *S = initSMatrix(numpg, tmp->data);
+    DMatrix *tmp = initDMatrixV(npp, numpg, 0.0);
+    // fill partial H matrices based on mapping functions indices
+    fillDMatrixMultProc(pid, npp, numpg, tmp); 
+    SMatrix *S = initSMatrixP(numpg, tmp->numRow, tmp->numCol, tmp->data);
+
     destroyDMatrix(tmp);
-    Vector *pgrkV = initVector(numpg);
+
+    Vector *pgrkV = initVectorP(npp, numpg);
 
     // display the S matrix
-    printf("S matrix = \n");
+    printf("pid = %d and here is my S matrix\n", pid);
     printSMatrix(S);
 
     //prints pagerank vector before matvec
-    printf("pagerank vector before web surfing\n");
+    printf("pid = %d and pagerank vector before web surfing\n", pid);
     printDMatrix(pgrkV);
 
-
+     
 
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) {
-        pgrkV = matVecSp(S, pgrkV, pid, numprocs);
-        printf("pagerank after iter %d \n", iter);
-        printDMatrix(pgrkV);
+
+        // allGather pgrkV to multiply to matvec local H
+        double* tmp = malloc(sizeof(double)*npp);
+
+        for(uint i = 0; i < npp; ++i) {
+            tmp[i] = pgrkV->data[i][0];
+        }
+
+        // MPI_Gather(...)
+        double* total = (double *)malloc(sizeof(double) * numpg);
+    
+        MPI_Allgather(tmp, npp, MPI_DOUBLE, total, npp, MPI_DOUBLE, MPI_COMM_WORLD);
+
+    
+        Vector* totalV = initVectorV(numpg, 0.0);
+        for(uint i = 0; i < numpg; ++i) {
+            totalV->data[i][0] = total[i];
+        }
+
+        pgrkV = matVecSp(S, pgrkV, pid, npp, numprocs);
+        // printf("pagerank after iter %d \n", iter);
+        // printDMatrix(pgrkV);
+
+        destroyDMatrix(totalV);
+        free(tmp);
+        free(total);
     }
 
 
 
 
-   if (numpg <= 16)
+    if (numpg <= 16)
     { // print the page rank vector is small
-        printf("pagerank vector after web surfing\n");
-        printDMatrix(pgrkV);
+      
+        double* total = NULL;
+        if(pid == 0) {
+            total = malloc(sizeof(double)*numpg);
+        }
+    
+        double* tmp = malloc(sizeof(double)*npp);
+
+        for(uint i = 0; i < npp; ++i) {
+            tmp[i] = pgrkV->data[i][0];
+        }
+        // MPI_Gather(...)
+        MPI_Gather(tmp, npp, MPI_DOUBLE, total, npp, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        
+        if(pid == 0) {
+            printf("pagerank vector after web surfing\n");
+
+            Vector* totalV = initVectorV(numpg, 0.0);
+            for(uint i = 0; i < numpg; ++i) {
+                totalV->data[i][0] = total[i];
+            }
+            
+            printDMatrix(totalV);
+            minmaxPageRank(totalV);
+            destroyDMatrix(totalV);
+            free(total);
+        }
+        free(tmp);
     }
-
-
-    // display lowest and highest page ranks
-    printf("page rank results: \n");
-    minmaxPageRank(pgrkV);
+   
 
     // garbage management
     destroySMatrix(S);

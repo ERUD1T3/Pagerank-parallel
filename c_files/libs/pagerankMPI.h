@@ -25,7 +25,7 @@ DMatrix *dampen(DMatrix *H);
 /* parallel */
 void vecNormalize(Vector *vec, uint pid, uint numprocs);                      // normalize values of surfer values
 Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs); // multiply compatible matrix and vector
-Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint numprocs);
+Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint npp, uint numprocs);
 void fillDMatrixMultProc(uint pid, uint npp, uint numpg, DMatrix* H);
                      // transform H matrix into G (dampened) matrix
 
@@ -123,9 +123,10 @@ Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
     
 }
 
-Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint numprocs)
+Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint npp, uint numprocs)
 {
-    Vector *res = initVector(vec->numRow);
+    Vector *res = initVectorV(npp, 0.0);
+
     for (uint r = 0; r < mat->rowidxN - 1; ++r)
     {
         double tmp = 0.0;

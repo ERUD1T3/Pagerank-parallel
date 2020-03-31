@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     Vector *pgrkV = initVectorP(npp, numpg);
 
     // display the H matrix
-    printf("pid = %d and here is my H matrixs\n", pid);
+    printf("pid = %d and here is my H matrix\n", pid);
     printDMatrix(H);
 
     //prints pagerank vector before matvec
