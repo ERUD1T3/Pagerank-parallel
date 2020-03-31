@@ -1,4 +1,4 @@
-all: assgn1 assgn2 assgn3 assgnextra test
+all: pgrk1 pgrk2 pgrk3 pgrkX test
 
 test:
 	gcc -ggdb -o ./bin/t ./c_files/test.c
