@@ -102,5 +102,5 @@
 ## the -n option: the number of tasks is taken from
 ## SLURM's --ntasks option.
 
-mpiexec ./bin/pgrkx 16
+mpiexec ./bin/pgrk3 1600
 

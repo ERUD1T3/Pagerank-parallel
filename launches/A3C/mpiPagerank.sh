@@ -45,7 +45,7 @@
 ## the -n option from mpirun. If your job has any form of
 ## threading (ex, OpenMP), you may want to also uncomment
 ## --cpu_per_task
-#SBATCH --ntasks 4
+#SBATCH --ntasks 2
 
 ## SBATCH --mem [memory]
 ## Amount of memory your job needs per node, regardless of the
@@ -102,5 +102,5 @@
 ## the -n option: the number of tasks is taken from
 ## SLURM's --ntasks option.
 
-mpiexec ./bin/pgrkx 16
+mpiexec ./bin/pgrk3 16
 
