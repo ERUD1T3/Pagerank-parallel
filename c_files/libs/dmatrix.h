@@ -12,22 +12,23 @@ typedef struct pair Pair;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function prototypes
 DMatrix *initDMatrix(uint numpg); //initialize new dense matrix
-DMatrix *initDMatrixP(uint rowsize, uint colsize);
+DMatrix *initDMatrixV(uint rowsize, uint colsize, double val);
 Vector *initVector(uint numpg);   // intialize a new vector
 Vector *initVectorP(uint size, uint numpg);
+Vector *initVectorV(uint size, double val);
 void printDMatrix(DMatrix *dmat);
 void fillDMatrix(DMatrix *mat, double val);
 void fillDMatrixfromData(DMatrix *mat, double data[10][10]);
 void destroyDMatrix(DMatrix *mat);
-uint globalIndex(uint pid, uint localIndex, uint npp);
-Pair localIndex(uint glocalIndex, uint npp);
+uint globR(uint pid, uint locr, uint npp);
+Pair locR(uint globr, uint npp);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // definition of dense matrix object
 
 struct pair 
 {
-    uint pid, localIndex;
+    uint pid, locR;
 };
 
 struct dmatrix
@@ -68,7 +69,7 @@ DMatrix *initDMatrix(uint numpg)
 }
 
 
-DMatrix *initDMatrixP(uint rowsize, uint colsize)
+DMatrix *initDMatrixV(uint rowsize, uint colsize, double val)
 {
     //initialize a new Dense matrix for rangking algorithm
 
@@ -83,7 +84,7 @@ DMatrix *initDMatrixP(uint rowsize, uint colsize)
     for (uint r = 0; r < rowsize; ++r)
         matrix->data[r] = (double *)malloc(colsize * sizeof(double));
 
-    fillDMatrix(matrix, 0.0);
+    fillDMatrix(matrix, val);
 
     return matrix;
 }
@@ -133,6 +134,24 @@ Vector *initVectorP(uint size, uint numpg)
     return vec;
 }
 
+
+Vector *initVectorV(uint size, double val)
+{
+    //initialize the surf vector
+    Vector *vec = (Vector *)malloc(sizeof(Vector));
+    // vec->numpg = numpg;
+    vec->numRow = size;
+    vec->numCol = 1;
+
+    // setting up data matrix to zeros
+    vec->data = (double **)malloc(size * sizeof(double *));
+    for (uint r = 0; r < size; ++r)
+        vec->data[r] = (double *)malloc(sizeof(double));
+
+    fillDMatrix(vec, val);
+    return vec;
+}
+
 void printDMatrix(DMatrix *dmat)
 {
     // print the dense matrix
@@ -165,14 +184,16 @@ void fillDMatrixfromData(DMatrix *mat, double data[10][10])
             mat->data[r][c] = data[r][c];
 }
 
-uint globalIndex(uint pid, uint localIndex, uint npp) {
-    return pid*npp + localIndex;
+uint globR(uint pid, uint locr, uint npp) {
+    // return global row index
+    return pid*npp + locr;
 }
 
-Pair localIndex(uint glocalIndex, uint npp) {
+Pair locR(uint globr, uint npp) {
+    // return local row index and the pid 
     Pair res;
-    res.pid = glocalIndex/npp;
-    res.localIndex = glocalIndex%npp;
+    res.pid = globr/npp;
+    res.locR = globr%npp;
 
     return res;
 }

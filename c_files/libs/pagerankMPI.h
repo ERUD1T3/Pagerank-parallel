@@ -26,6 +26,7 @@ DMatrix *dampen(DMatrix *H);
 void vecNormalize(Vector *vec, uint pid, uint numprocs);                      // normalize values of surfer values
 Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs); // multiply compatible matrix and vector
 Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint numprocs);
+void fillDMatrixMultProc(uint pid, uint npp, uint numpg, DMatrix* H);
                      // transform H matrix into G (dampened) matrix
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,14 +60,14 @@ DMatrix *dampen(DMatrix *mat)
 {
     // multiply compatible matrix and vector
 
-    uint numpg = mat->numRow;
+    uint numpg = mat->numCol;
 
     for (uint r = 0; r < mat->numRow; ++r)
         for (uint c = 0; c < mat->numCol; ++c)
             mat->data[r][c] = Q / numpg + (1.0 - Q) * mat->data[r][c];
 
-    printf("Dampened : \n");
-    printDMatrix(mat);
+    // printf("Dampened : \n");
+    // printDMatrix(mat);
     return mat;
 }
 
@@ -77,29 +78,32 @@ void vecNormalize(Vector *vec, uint pid, uint numprocs)
 {
     // normalize the content of vector to sum up to one
     // parallelized vecNormalize
-    double sum = 0;
+    double loc_sum = 0.0;
 
-    // mpi allReduce
+    // forming local sum 
     for (uint r = 0; r < vec->numRow; ++r)
-        sum += vec->data[r][0];
+        loc_sum += vec->data[r][0];
+
+    double glob_sum;
+    // mpi allReduce sum of vec entries
+    MPI_Allreduce(&loc_sum, &glob_sum, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+    
 
     // divide your copy of x
     for (uint r = 0; r < vec->numRow; ++r)
-        vec->data[r][0] /= sum;
+        vec->data[r][0] /= glob_sum;
 }
 
 Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
 {
     // multiply compatible matrix and vector
 
-    Vector *res = initVector(vec->numRow);
+    Vector *res = initVectorV(mat->numRow, 0.0);
     dampen(mat); //dampen own copy of matrix
 
     double tmp;
     
-
-    // allGather X everywhere
-    for (uint r = pid + 1; r < mat->numRow; r += numprocs)
+    for (uint r = 0; r < mat->numRow; ++r)
     {
         
         tmp = 0.0;
@@ -109,8 +113,6 @@ Vector* matVec(DMatrix *mat, Vector *vec, uint pid, uint numprocs)
         {
             tmp += mat->data[r][c] * vec->data[c][0];
         }
-
-        // MPI_Reduce(&tmp, &sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
         res->data[r][0] = tmp;
     }
@@ -143,5 +145,35 @@ Vector* matVecSp(SMatrix *mat, Vector *vec, uint pid, uint numprocs)
     return res;
 }
 
+
+void fillDMatrixMultProc(uint pid, uint npp, uint numpg, DMatrix* H) {
+    // fill DMatrix in several processor
+
+    // assume all partial Hs have been initialized to 0
+    if(pid == locR(0, npp).pid) {
+        H->data[locR(0, npp).locR][numpg - 1] = .5;
+    } 
+    //    matrix->data[0][numpg - 1] = .5;
+
+    if(pid == locR(1, npp).pid) {
+        H->data[locR(1, npp).locR][0] = 1.0;
+    }
+    // H->data[1][0] = 1.0;
+
+    for (uint r = 0, c = 1; r < numpg - 1; ++r, ++c){
+        if(pid == locR(r, npp).pid) {
+            H->data[locR(r, npp).locR][c] = .5;
+        }
+        // H->data[r][c] = .5;
+    }
+
+    for (uint r = 2, c = 1; r < numpg; ++r, ++c) {
+        if(pid == locR(r, npp).pid) {
+            H->data[locR(r, npp).locR][c] = .5;
+        }
+        // H->data[r][c] = .5;
+    }
+       
+}
 
 #endif // DENSE_MAT

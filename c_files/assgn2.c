@@ -17,18 +17,18 @@ int main(int argc, char *argv[])
     Vector* pgrkV2 = initVector(numpg);
 
     // display the S matrix
-    printf("S matrix = \n");
-    printSMatrix(S);
+    // printf("S matrix = \n");
+    // printSMatrix(S);
 
     //prints pagerank vector before matvec
-    printf("pagerank vector before web surfing\n");
-    printDMatrix(pgrkV2);
+    // printf("pagerank vector before web surfing\n");
+    // printDMatrix(pgrkV2);
 
     // apply matvec with dampening on for 1000 iterations
     for (uint iter = 0; iter < K; ++iter) {
         pgrkV2 = matVecSp(S, pgrkV2); // parallelized matVecDampn
-        printf("pagerank after iter %d \n", iter);
-        printDMatrix(pgrkV2);
+        // printf("pagerank after iter %d \n", iter);
+        // printDMatrix(pgrkV2);
     }
 
     if (numpg <= 16)
