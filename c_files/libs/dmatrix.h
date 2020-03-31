@@ -94,7 +94,7 @@ void destroyDMatrix(DMatrix *mat)
 {
     // detroy matrix object and free its memory
     for (uint r = 0; r < mat->numRow; ++r)
-        free((mat->data)[r]);
+        free(mat->data[r]);
     free(mat->data);
     free(mat);
 }
