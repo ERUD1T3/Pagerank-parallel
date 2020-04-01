@@ -1,0 +1,306 @@
+*** Error in `./bin/pgrkx': malloc(): memory corruption: 0x000000000159c660 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x82c96)[0x7f81cdc7ac96]
+/lib64/libc.so.6(__libc_malloc+0x4c)[0x7f81cdc7d1ac]
+./bin/pgrkx[0x400e12]
+./bin/pgrkx[0x401eae]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x7f81cdc1a3d5]
+./bin/pgrkx[0x400a09]
+======= Memory map: ========
+*** Error in `./bin/pgrkx': malloc(): memory corruption: 0x0000000001f6d660 ***
+======= Backtrace: =========
+00400000-00403000 r-xp 00000000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+00602000-00603000 r--p 00002000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+00603000-00604000 rw-p 00003000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+01564000-01631000 rw-p 00000000 00:00 0                                  [heap]
+7f81c4000000-7f81c4021000 rw-p 00000000 00:00 0 
+7f81c4021000-7f81c8000000 ---p 00000000 00:00 0 
+7f81ca3a4000-7f81ca645000 rw-p 00000000 00:00 0 
+7f81ca645000-7f81ca65b000 r-xp 00000000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f81ca65b000-7f81ca85a000 ---p 00016000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f81ca85a000-7f81ca85b000 r--p 00015000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f81ca85b000-7f81ca85c000 rw-p 00016000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f81ca85c000-7f81ca85e000 rw-p 00000000 00:00 0 
+7f81ca85e000-7f81ca863000 r-xp 00000000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f81ca863000-7f81caa63000 ---p 00005000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f81caa63000-7f81caa64000 r--p 00005000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f81caa64000-7f81caa65000 rw-p 00006000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f81caa65000-7f81caa71000 r-xp 00000000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f81caa71000-7f81cac70000 ---p 0000c000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f81cac70000-7f81cac71000 r--p 0000b000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f81cac71000-7f81cac72000 rw-p 0000c000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f81cac72000-7f81cac78000 rw-p 00000000 00:00 0 
+7f81cac78000-7f81cbd39000 rw-s 00000000 00:13 12702049                   /dev/shm/mpich_shar_tmpWEw4Bv (deleted)
+7f81cbd39000-7f81cbd7f000 r-xp 00000000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f81cbd7f000-7f81cbf7e000 ---p 00046000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f81cbf7e000-7f81cbf7f000 r--p 00045000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f81cbf7f000-7f81cbf80000 rw-p 00046000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f81cbf80000-7f81cbf97000 r-xp 00000000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f81cbf97000-7f81cc196000 ---p 00017000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f81cc196000-7f81cc197000 r--p 00016000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f81cc197000-7f81cc198000 rw-p 00017000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f81cc198000-7f81cc19f000 r-xp 00000000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f81cc19f000-7f81cc39e000 ---p 00007000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f81cc39e000-7f81cc39f000 r--p 00006000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f81cc39f000-7f81cc3a0000 rw-p 00007000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f81cc3a0000-7f81cc3b7000 r-xp 00000000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f81cc3b7000-7f81cc5b6000 ---p 00017000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f81cc5b6000-7f81cc5b7000 r--p 00016000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f81cc5b7000-7f81cc5b8000 rw-p 00017000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f81cc5b8000-7f81cc5bc000 rw-p 00000000 00:00 0 
+7f81cc5bc000-7f81cc6bd000 r-xp 00000000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f81cc6bd000-7f81cc8bc000 ---p 00101000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f81cc8bc000-7f81cc8bd000 r--p 00100000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f81cc8bd000-7f81cc8be000 rw-p 00101000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f81cc8be000-7f81ccb47000 r-xp 00000000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f81ccb47000-7f81ccd47000 ---p 00289000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f81ccd47000-7f81ccd48000 r--p 00289000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f81ccd48000-7f81ccd4a000 rw-p 0028a000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f81ccd4a000-7f81cce45000 r-xp 00000000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f81cce45000-7f81cd045000 ---p 000fb000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f81cd045000-7f81cd047000 r--p 000fb000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f81cd047000-7f81cd048000 rw-p 000fd000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f81cd048000-7f81cd06d000 r-xp 00000000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f81cd06d000-7f81cd26c000 ---p 00025000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f81cd26c000-7f81cd26d000 r--p 00024000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f81cd26d000-7f81cd26e000 rw-p 00025000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f81cd26e000-7f81cd284000 r-xp 00000000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f81cd284000-7f81cd483000 ---p 00016000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f81cd483000-7f81cd484000 r--p 00015000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f81cd484000-7f81cd485000 rw-p 00016000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f81cd485000-7f81cd487000 r-xp 00000000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f81cd487000-7f81cd687000 ---p 00002000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f81cd687000-7f81cd688000 r--p 00002000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f81cd688000-7f81cd689000 rw-p 00003000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f81cd689000-7f81cd7e4000 r-xp 00000000 00:27 35077298            /lib64/libc.so.6(+0x82c96)[0x7f5b929b1c96]
+/lib64/libc.so.6(__libc_malloc+0x4c)[0x7f5b929b41ac]
+./bin/pgrkx[0x400e12]
+./bin/pgrkx[0x401eae]
+       /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f81cd7e4000-7f81cd9e4000 ---p 0015b000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f81cd9e4000-7f81cd9ec000 r--p 0015b000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f81cd9ec000-7f81cd9ee000 rw-p 00163000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f81cd9ee000-7f81cd9ef000 rw-p 00000000 00:00 0 
+7f81cd9ef000-7f81cd9f7000 r-xp 00000000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f81cd9f7000-7f81cdbf6000 ---p 00008000 00:27 35070733                   /export/spack/linux-centos/lib64/libc.so.6(__libc_start_main+0xf5)[0x7f5b929513d5]
+7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f81cdbf6000-7f81cdbf7000 r--p 00007000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f81cdbf7000-7f81cdbf8000 rw-p 00008000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f81cdbf8000-7f81cddba000 r-xp 00000000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f81cddba000-7f81cdfba000 ---p 001c2000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f81cdfba000-7f81cdfbe000 r--p 001c2000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f81cdfbe000-7f81cdfc0000 rw-p 001c6000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f81cdfc0000-7f81cdfc5000 rw-p 00000000 00:00 0 
+7f81cdfc5000-7f81ce2b7000 r-xp 00000000 00:27 428169288                  /export/spack/linux./bin/pgrkx[0x400a09]
+======= Memory map: ========
+-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f81ce2b7000-7f81ce4b7000 ---p 002f2000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f81ce4b7000-7f81ce4c5000 r--p 002f2000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f81ce4c5000-7f81ce4c8000 rw-p 00300000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f81ce4c8000-7f81ce509000 rw-p 00000000 00:00 0 
+7f81ce509000-7f81ce52b000 r-xp 00000000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7f81ce57e000-7f81ce6bf000 rw-p 00000000 00:00 0 
+7f81ce6bf000-7f81ce705000 rw-p 00000000 00:00 0 
+7f81ce712000-7f81ce71c000 rw-p 00000000 00:00 0 
+7f81ce728000-7f81ce72a000 rw-p 00000000 00:00 0 
+7f81ce72a000-7f81ce72b000 r--p 00021000 08:04 5300400000-00403000 r-xp 00000000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+00602000-00603000 r--p 00002000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+00603000-00604000 rw-p 00003000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+01f35000-02002000 rw-p 00000000 00:00 0                                  [heap]
+7f5b88000000-7f5b88021000 rw-p 00000000 00:00 0 
+7f5b88021000-7f5b8c000000 ---p 00000000 00:00 0 
+7f5b8f0db000-7f5b8f37c000 rw-p 00000000 00:00 0 
+7f5b8f37c000-7f5b8f392000 r-xp 00000000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f5b8f392000-7f5b8f591000 ---p 00016000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f5b8f591000-7f5b8f592000 r--p 00015000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f5b8f592000-7f5b8f593000 rw-p 00016000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7f5b8f593000-7f5b8f595000 rw-p 00000000 00:00 0 
+7f5b8f595000-7f5b8f59a000 r-xp 00000000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f5b8f59a000-7f5b8f79a000 ---p 00005000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f5b8f79a000-7f5b8f79b000 r--p 00005000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f5b8f79b000-7f5b8f79c000 rw-p 00006000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7f5b8f79c000-7f5b8f7a8000 r-xp 00000000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f5b8f7a8000-7f5b8f9a7000 ---p 0000c000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f5b8f9a7000-7f5b8f9a8000 r--p 0000b000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f5b8f9a8000-7f5b8f9a9000 rw-p 0000c000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7f5b8f9a9000-7f5b8f9af000 rw-p 00000000 00:00 0 
+7f5b8f9af000-7f5b90a70000 rw-s 00000000 00:13 12702049                   /dev/shm/mpich_shar_tmpWEw4Bv (deleted)
+7f5b90a70000-7f5b90ab6000 r-xp 00000000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f5b90ab6000-7f5b90cb5000 ---p 00046000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f5b90cb5000-7f5b90cb6000 r--p 00045000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f5b90cb6000-7f5b90cb7000 rw-p 00046000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7f5b90cb7000-7f5b90cce000 r-xp 00000000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f5b90cce000-7f5b90ecd000 ---p 00017000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f5b90ecd000-7f5b90ece000 r--p 00016000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f5b90ece000-7f5b90ecf000 rw-p 00017000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7f5b90ecf000-7f5b90ed6000 r-xp 00000000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f5b90ed6000-7f5b910d5000 ---p 00007000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f5b910d5000-7f5b910d6000 r--p 00006000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f5b910d6000-7f5b910d7000 rw-p 00007000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7f5b910d7000-7f5b910ee000 r-xp 00000000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f5b910ee000-7f5b912ed000 ---p 00017000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f5b912ed000-7f5b912ee000 r--p 00016000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f5b912ee000-7f5b912ef000 rw-p 00017000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7f5b912ef000-7f5b912f3000 rw-p 00000000 00:00 0 
+7f5b912f3000-7f5b913f4000 r-xp 00000000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f5b913f4000-7f5b915f3000 ---p 00101000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f5b915f3000-7f5b915f4000 r--p 00100000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f5b915f4000-7f5b915f5000 rw-p 00101000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7f5b915f5000-7f5b9187e000 r-xp 00000000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f5b9187e000-7f5b91a7e000 ---p 00289000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f5b91a7e000-7f5b91a7f000 r--p 00289000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f5b91a7f000-7f5b91a81000 rw-p 0028a000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7f5b91a81000-7f5b91b7c000 r-xp 00000000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f5b91b7c000-7f5b91d7c000 ---p 000fb000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f5b91d7c000-7f5b91d7e000 r--p 000fb000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f5b91d7e000-7f5b91d7f000 rw-p 000fd000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7f5b91d7f000-7f5b91da4000 r-xp 00000000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f5b91da4000-7f5b91fa3000 ---p 00025000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f5b91fa3000-7f5b91fa4000 r--p 00024000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f5b91fa4000-7f5b91fa5000 rw-p 00025000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7f5b91fa5000-7f5b91fbb000 r-xp 00000000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf*** Error in `./bin/pgrkx': malloc(): memory corruption: 0x000000000259b660 ***
+/lib/libz.so.1.2.11
+7f5b91fbb000-7f5b921ba000 ---p 00016000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f5b921ba000-7f5b921bb000 r--p 00015000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f5b921bb000-7f5b921bc000 rw-p 00016000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7f5b921bc000-7f5b921be000 r-xp 00000000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f5b921be000-7f5b923be000 ---p 00002000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f5b923be000-7f5b923bf000 r--p 00002000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f5b923bf000-7f5b923c0000 rw-p 00003000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7f5b923c0000-7f5b9251b000 r-xp 00000000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f5b9251b000-7f5b9271b000 ---p 0015b000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f5b9271b000-7f5b92723000 r--p 0015b000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f5b92723000-7f5b92725000 rw-p 00163000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7f5b92725000-7f5b92726000 rw-p 00000000 00:00 0 
+7f5b92726000-7f5b9272e000 r-xp 00000000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f5b9272e000-7f5b9292d000 ---p 00008000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f5b9292d000-7f5b9292e000 r--p 00007000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f5b9292e000-7f5b9292f000 rw-p 00008000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7f5b9292f000-7f5b92af1000 r-xp 00000000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f5b92af1000-7f5b92cf1000 ---p 001c2000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f5b92cf1000-7f5b92cf5000 r--p 001c2000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f5b92cf5000-7f5b92cf7000 rw-p 001c6000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7f5b92cf7000-7f5b92cfc000 rw-p 00000000 00:00 0 
+7f5b92cfc000-7f5b92fee000 r-xp 00000000 00:27 428169288                  /export/spack/linux======= Backtrace: =========
+-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f5b92fee000-7f5b931ee000 ---p 002f2000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f5b931ee000-7f5b931fc000 r--p 002f2000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f5b931fc000-7f5b931ff000 rw-p 00300000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7f5b931ff000-7f5b93240000 rw-p 00000000 00:00 0 
+7f5b93240000-7f5b93262000 r-xp 00000000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7f5b932b5000-7f5b933f6000 rw-p 00000000 00:00 0 
+7f5b933f6000-7f5b9343c000 rw-p 00000000 00:00 0 
+7f5b93449000-7f5b93453000 rw-p 00000000 00:00 0 
+7f5b9345f000-7f5b93461000 rw-p 00000000 00:00 0 
+7f5b93461000-7f5b93462000 r--p 00021000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7f5b93462000-7f5b93463000 rw-p 00022000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7f5b93463000-7f5b93464000 rw-p 00000000 00:00 0 
+7ffd0d613000-7ffd0d636000 rw-p 00000000 00:00 0                          [stack]
+7ffd0d7b6000-7ffd0d7b8000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+/lib64/libc.so.6(+0x82c96)[0x7fb786dc6c96]
+/lib64/libc.so.6(__libc_malloc+0x4c)[0x7fb786dc91ac]
+./bin/pgrkx[0x400e12]
+./bin/pgrkx[0x401eae]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x7fb786d663d5]
+./bin/pgrkx[0x400a09]
+======= Memory map: ========
+00400000-00403000 r-xp 00000000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+00602000-00603000 r--p 00002000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+00603000-00604000 rw-p 00003000 00:2c 289281300                          /udrive/student/jmoukpe2016/pagerank-paraproc/bin/pgrkx
+02563000-02630000 rw-p 00000000 00:00 0                                  [heap]
+7fb77c000000-7fb77c021000 rw-p 00000000 00:00 0 
+7fb77c021000-7fb780000000 ---p 00000000 00:00 0 
+7fb7834f0000-7fb783791000 rw-p 00000000 00:00 0 
+7fb783791000-7fb7837a7000 r-xp 00000000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7fb7837a7000-7fb7839a6000 ---p 00016000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7fb7839a6000-7fb7839a7000 r--p 00015000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7fb7839a7000-7fb7839a8000 rw-p 00016000 08:04 537339414                  /usr/lib64/libresolv-2.17.so
+7fb7839a8000-7fb7839aa000 rw-p 00000000 00:00 0 
+7fb7839aa000-7fb7839af000 r-xp 00000000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7fb7839af000-7fb783baf000 ---p 00005000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7fb783baf000-7fb783bb0000 r--p 00005000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7fb783bb0000-7fb783bb1000 rw-p 00006000 08:04 537336815                  /usr/lib64/libnss_dns-2.17.so
+7fb783bb1000-7fb783bbd000 r-xp 00000000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7fb783bbd000-7fb783dbc000 ---p 0000c000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7fb783dbc000-7fb783dbd000 r--p 0000b000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7fb783dbd000-7fb783dbe000 rw-p 0000c000 08:04 537336817                  /usr/lib64/libnss_files-2.17.so
+7fb783dbe000-7fb783dc4000 rw-p 00000000 00:00 0 
+7fb783dc4000-7fb784e85000 rw-s 00000000 00:13 12702049                   /dev/shm/mpich_shar_tmpWEw4Bv (deleted)
+7fb784e85000-7fb784ecb000 r-xp 00000000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7fb784ecb000-7fb7850ca000 ---p 00046000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7fb7850ca000-7fb7850cb000 r--p 00045000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7fb7850cb000-7fb7850cc000 rw-p 00046000 00:27 33829833                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libquadmath.so.0.0.0
+7fb7850cc000-7fb7850e3000 r-xp 00000000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7fb7850e3000-7fb7852e2000 ---p 00017000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7fb7852e2000-7fb7852e3000 r--p 00016000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7fb7852e3000-7fb7852e4000 rw-p 00017000 00:27 33829852                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgcc_s.so.1
+7fb7852e4000-7fb7852eb000 r-xp 00000000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7fb7852eb000-7fb7854ea000 ---p 00007000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7fb7854ea000-7fb7854eb000 r--p 00006000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7fb7854eb000-7fb7854ec000 rw-p 00007000 08:04 537344874                  /usr/lib64/librt-2.17.so
+7fb7854ec000-7fb785503000 r-xp 00000000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7fb785503000-7fb785702000 ---p 00017000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7fb785702000-7fb785703000 r--p 00016000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7fb785703000-7fb785704000 rw-p 00017000 08:04 537339382                  /usr/lib64/libpthread-2.17.so
+7fb785704000-7fb785708000 rw-p 00000000 00:00 0 
+7fb785708000-7fb785809000 r-xp 00000000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7fb785809000-7fb785a08000 ---p 00101000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7fb785a08000-7fb785a09000 r--p 00100000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7fb785a09000-7fb785a0a000 rw-p 00101000 08:04 537336802                  /usr/lib64/libm-2.17.so
+7fb785a0a000-7fb785c93000 r-xp 00000000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7fb785c93000-7fb785e93000 ---p 00289000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmi7336782                  /usr/lib64/ld-2.17.so
+7f81ce72b000-7f81ce72c000 rw-p 00022000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7f81ce72c000-7f81ce72d000 rw-p 00000000 00:00 0 
+7ffd32c6d000-7ffd32c90000 rw-p 00000000 00:00 0                          [stack]
+7ffd32d12000-7ffd32d14000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+tnuslcyol3/lib64/libgfortran.so.5.0.0
+7fb785e93000-7fb785e94000 r--p 00289000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7fb785e94000-7fb785e96000 rw-p 0028a000 00:27 34948839                   /export/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-9.1.0-mj7s6dgfnhgi2n42fyxgmitnuslcyol3/lib64/libgfortran.so.5.0.0
+7fb785e96000-7fb785f91000 r-xp 00000000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7fb785f91000-7fb786191000 ---p 000fb000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7fb786191000-7fb786193000 r--p 000fb000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7fb786193000-7fb786194000 rw-p 000fd000 00:27 425160919                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/libiconv-1.15-6xjvo4vy7s7hrcydy56enjitduqb5jcq/lib/libiconv.so.2.6.0
+7fb786194000-7fb7861b9000 r-xp 00000000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7fb7861b9000-7fb7863b8000 ---p 00025000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7fb7863b8000-7fb7863b9000 r--p 00024000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7fb7863b9000-7fb7863ba000 rw-p 00025000 00:27 296289940                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/xz-5.2.4-73dfwpibqlw24w2d6xdsipjaooez6yw5/lib/liblzma.so.5.2.4
+7fb7863ba000-7fb7863d0000 r-xp 00000000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7fb7863d0000-7fb7865cf000 ---p 00016000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7fb7865cf000-7fb7865d0000 r--p 00015000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7fb7865d0000-7fb7865d1000 rw-p 00016000 00:27 135015757                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/zlib-1.2.11-wlsguaqpnjri6ufyhgrxdqw7p4otzsrf/lib/libz.so.1.2.11
+7fb7865d1000-7fb7865d3000 r-xp 00000000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7fb7865d3000-7fb7867d3000 ---p 00002000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7fb7867d3000-7fb7867d4000 r--p 00002000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7fb7867d4000-7fb7867d5000 rw-p 00003000 08:04 537336800                  /usr/lib64/libdl-2.17.so
+7fb7867d5000-7fb786930000 r-xp 00000000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7fb786930000-7fb786b30000 ---p 0015b000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7fb786b30000-7fb786b38000 r--p 0015b000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7fb786b38000-7fb786b3a000 rw-p 00163000 00:27 35077298                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libxml2-2.9.9-tbctoln6ynksctnkh53yjt3ywulbjij6/lib/libxml2.so.2.9.9
+7fb786b3a000-7fb786b3b000 rw-p 00000000 00:00 0 
+7fb786b3b000-7fb786b43000 r-xp 00000000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7fb786b43000-7fb786d42000 ---p 00008000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7fb786d42000-7fb786d43000 r--p 00007000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7fb786d43000-7fb786d44000 rw-p 00008000 00:27 35070733                   /export/spack/linux-centos7-x86_64/gcc-9.1.0/libpciaccess-0.13.5-uuu2vcsfrj3f5a7nlkclezsbhjaoceqv/lib/libpciaccess.so.0.11.1
+7fb786d44000-7fb786f06000 r-xp 00000000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7fb786f06000-7fb787106000 ---p 001c2000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7fb787106000-7fb78710a000 r--p 001c2000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7fb78710a000-7fb78710c000 rw-p 001c6000 08:04 537336794                  /usr/lib64/libc-2.17.so
+7fb78710c000-7fb787111000 rw-p 00000000 00:00 0 
+7fb787111000-7fb787403000 r-xp 00000000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7fb787403000-7fb787603000 ---p 002f2000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7fb787603000-7fb787611000 r--p 002f2000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7fb787611000-7fb787614000 rw-p 00300000 00:27 428169288                  /export/spack/linux-centos7-x86_64/gcc-9.1.0/mpich-3.3-2owqmkkk53rjwu35n3lafkunwk5rssrj/lib/libmpi.so.12.1.6
+7fb787614000-7fb787655000 rw-p 00000000 00:00 0 
+7fb787655000-7fb787677000 r-xp 00000000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7fb7876ca000-7fb78780b000 rw-p 00000000 00:00 0 
+7fb78780b000-7fb787851000 rw-p 00000000 00:00 0 
+7fb78785e000-7fb787868000 rw-p 00000000 00:00 0 
+7fb787874000-7fb787876000 rw-p 00000000 00:00 0 
+7fb787876000-7fb787877000 r--p 00021000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7fb787877000-7fb787878000 rw-p 00022000 08:04 537336782                  /usr/lib64/ld-2.17.so
+7fb787878000-7fb787879000 rw-p 00000000 00:00 0 
+7fff5a630000-7fff5a653000 rw-p 00000000 00:00 0                          [stack]
+7fff5a738000-7fff5a73a000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
